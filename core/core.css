@@ -1,0 +1,90 @@
+/* 
+  PATCH BRIEFS CORE ENGINE v1.0
+  Based on Signalform design system.
+*/
+
+:root {
+    /* Brand Colors */
+    --navy-primary: #0F172A;
+    --navy-secondary: #1E293B;
+    --gold-accent: #F59E0B;
+    --ember-accent: #D97706;
+    --emerald-signal: #10B981;
+    --bone-white: #F8FAFC;
+    --slate-ghost: #94A3B8;
+    --den-dark: #1A1612;
+
+    /* Animations */
+    --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-fast: all 0.2s ease;
+}
+
+/* Base Styles */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+/* Typography Selection */
+::selection {
+    background: var(--ember-accent);
+    color: var(--den-dark);
+}
+
+.font-serif {
+    font-family: 'Newsreader', serif;
+}
+
+.font-mono {
+    font-family: 'JetBrains Mono', monospace;
+}
+
+/* Gradient text utility */
+.gradient-text {
+    background: linear-gradient(135deg, var(--gold-accent) 0%, var(--emerald-signal) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Tactical Components */
+.tactical-card {
+    background: linear-gradient(180deg, rgba(30, 41, 59, 0.5) 0%, rgba(15, 23, 42, 0.8) 100%);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    transition: var(--transition-smooth);
+}
+
+.tactical-card:hover {
+    border-color: rgba(245, 158, 11, 0.3);
+}
+
+/* Status indicators */
+.status-indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.status-active {
+    background-color: var(--emerald-signal);
+    box-shadow: 0 0 10px var(--emerald-signal);
+}
+
+.status-draft {
+    background-color: var(--gold-accent);
+}
+
+/* Print Optimization */
+@media print {
+    body {
+        background-color: white !important;
+        color: black !important;
+    }
+}

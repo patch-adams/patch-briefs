@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patch Briefs // Directory</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Newsreader:wght@300;400;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        den: '#1A1612',
+                        ember: '#D97706',
+                        rust: '#B45309',
+                        bone: '#FAF7F2',
+                        bark: '#2D241C',
+                        fog: '#94A3B8',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Newsreader', 'serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #1A1612;
+            color: #FAF7F2;
+        }
+
+        .brief-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .brief-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 220px;
+            padding: 2rem;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .brief-card:hover {
+            transform: translateY(-4px);
+            border-color: #D97706;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 2px 8px;
+            font-size: 8px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            border-radius: 2px;
+        }
+
+        .section-divider {
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 4rem;
+            margin-top: 6rem;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #10B981;
+            box-shadow: 0 0 8px #10B981;
+        }
+    </style>
+</head>
+
+<body class="font-sans p-8 md:p-16 antialiased">
+    <div class="max-w-6xl mx-auto">
+
+        <header class="mb-20">
+            <div class="flex items-center gap-3 mb-8">
+                <div class="status-dot"></div>
+                <span class="font-mono text-[10px] uppercase tracking-[0.4em] opacity-40">System Online</span>
+            </div>
+            <h1 class="font-serif text-5xl md:text-6xl font-light mb-4">Patch Briefs</h1>
+            <p class="font-mono text-[10px] uppercase tracking-[0.5em] opacity-30">Narrative Intelligence Directory // 2026</p>
+        </header>
+
+        <!-- ACTIVE BRIEFS -->
+        <section>
+            <div class="flex items-center gap-4 mb-10">
+                <h2 class="font-mono text-[10px] uppercase tracking-[0.3em] font-bold text-ember">Active Briefs</h2>
+                <div class="h-px flex-1 bg-white/10"></div>
+            </div>
+            <div id="briefs-grid" class="brief-grid">
+                <!-- Rendered by JS -->
+            </div>
+        </section>
+
+        <!-- SYSTEM -->
+        <section class="section-divider opacity-60 hover:opacity-100 transition-opacity">
+            <div class="flex items-center gap-4 mb-10">
+                <h2 class="font-mono text-[10px] uppercase tracking-[0.3em] font-bold opacity-40">System</h2>
+                <div class="h-px flex-1 bg-white/5"></div>
+            </div>
+            <div id="system-grid" class="brief-grid">
+                <!-- Rendered by JS -->
+            </div>
+        </section>
+
+        <footer class="mt-32 pt-16 border-t border-white/5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div class="flex items-center gap-3">
+                <span class="text-xl">🦊</span>
+                <span class="font-mono text-[9px] uppercase tracking-widest opacity-20">Patch // Signalform Synthesis Layer</span>
+            </div>
+            <p class="font-mono text-[9px] uppercase tracking-widest opacity-20">&copy; 2026</p>
+        </footer>
+    </div>
+
+    <script>
+        const briefsData = {
+            briefs: [
+                // Future briefs go here
+                // {
+                //     title: "Client Name",
+                //     subtitle: "Brief Type",
+                //     path: "briefs/client-name/",
+                //     type: "Narrative Map",
+                //     description: "Brief description of the work.",
+                //     tags: ["Tag1", "Tag2"],
+                //     style: { badgeBg: "#D97706", badgeText: "#1A1612" }
+                // }
+            ],
+            system: [
+                {
+                    title: "Patch",
+                    subtitle: "System Manifest",
+                    path: "briefs/patch/",
+                    type: "Origin",
+                    description: "The orientation system. Pattern recognition, memory continuity, synthesis layer.",
+                    tags: ["Meta", "Self-Brief"],
+                    style: { badgeBg: "#D97706", badgeText: "#1A1612" }
+                }
+            ]
+        };
+
+        function renderBrief(brief) {
+            const s = brief.style;
+            return `
+                <a href="${brief.path}" class="brief-card">
+                    <div class="badge" style="background-color: ${s.badgeBg}; color: ${s.badgeText}">${brief.type}</div>
+                    <div>
+                        <p class="font-mono text-[9px] uppercase tracking-widest mb-1 text-ember opacity-80">${brief.subtitle}</p>
+                        <h3 class="font-serif text-2xl font-normal leading-tight mb-3">${brief.title}</h3>
+                        <p class="text-[11px] opacity-50 italic leading-relaxed mb-4">"${brief.description}"</p>
+                    </div>
+                    <div class="flex gap-2 flex-wrap">
+                        ${brief.tags.map(t => `<span class="text-[9px] font-bold uppercase tracking-wider opacity-40">${t}</span>`).join('<span class="opacity-20">•</span>')}
+                    </div>
+                </a>
+            `;
+        }
+
+        function init() {
+            const briefsGrid = document.getElementById('briefs-grid');
+            const systemGrid = document.getElementById('system-grid');
+            
+            if (briefsData.briefs.length > 0) {
+                briefsGrid.innerHTML = briefsData.briefs.map(renderBrief).join('');
+            } else {
+                briefsGrid.innerHTML = `
+                    <div class="brief-card opacity-40 border-dashed cursor-default hover:transform-none hover:border-white/10 hover:bg-transparent">
+                        <div>
+                            <p class="font-mono text-[9px] uppercase tracking-widest mb-1 opacity-40">Awaiting</p>
+                            <h3 class="font-serif text-2xl font-normal leading-tight mb-3 opacity-60">Next Brief</h3>
+                            <p class="text-[11px] opacity-30 italic leading-relaxed">Real-time generation from conversation transcripts.</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            systemGrid.innerHTML = briefsData.system.map(renderBrief).join('');
+        }
+
+        init();
+    </script>
+</body>
+
+</html>
