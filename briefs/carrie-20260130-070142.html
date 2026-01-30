@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrie's Brief // The Change Architect</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=Newsreader:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        den: '#1A1612',
+                        ember: '#D97706',
+                        rust: '#B45309',
+                        bone: '#FAF7F2',
+                        bark: '#3D2E1F',
+                        moss: '#4A5944',
+                        fog: '#94A3B8',
+                    },
+                    fontFamily: {
+                        sans: ['IBM Plex Sans', 'sans-serif'],
+                        serif: ['Newsreader', 'serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #1A1612; color: #FAF7F2; }
+        .ember-gradient {
+            background: linear-gradient(135deg, #D97706 0%, #B45309 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .signal-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        .signal-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: #D97706;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-bone">
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-den/95 backdrop-blur-md border-b border-white/5 h-16 flex items-center px-6 md:px-12">
+        <div class="max-w-screen-xl mx-auto w-full flex justify-between items-center">
+            <span class="font-mono text-[10px] uppercase tracking-[0.3em] font-bold opacity-60">Patch // Brief</span>
+            <span class="text-xl">🦊</span>
+        </div>
+    </nav>
+
+    <main class="max-w-screen-xl mx-auto px-6 md:px-12 pt-32 pb-24">
+        <header class="mb-24">
+            <div class="w-16 h-px bg-ember mb-8"></div>
+            <h1 class="font-serif text-5xl md:text-6xl font-light mb-4 opacity-80">Carrie</h1>
+            <h2 class="font-serif text-3xl md:text-4xl font-medium ember-gradient tracking-tight mb-8">
+                The Change Architect
+            </h2>
+            <p class="font-serif text-xl md:text-2xl text-fog italic leading-relaxed max-w-2xl">
+                "Our brains are literally hardwired to resist change. People can't think logically about a change until they've ironed out threat."
+            </p>
+            <div class="font-mono text-[10px] uppercase tracking-[0.2em] opacity-40 mt-6">
+                January 2026 // Calgary
+            </div>
+        </header>
+
+        <div class="w-full h-px bg-white/5 mb-16"></div>
+
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-24">
+            <div class="lg:col-span-3">
+                <h2 class="font-mono text-[10px] uppercase tracking-[0.3em] font-bold text-ember mb-4">01 // The Problem</h2>
+                <p class="font-serif italic text-lg opacity-60">The wall between play and work.</p>
+            </div>
+            <div class="lg:col-span-9">
+                <div class="border-l-2 border-white/10 pl-8 py-2">
+                    <p class="text-fog text-xl leading-relaxed max-w-2xl mb-6">
+                        Carrie works in change management at a nearly 100-year-old company with deep-rooted resistance to transformation. Many employees are "lifers"—some just steps away from retirement—who view their work as a job, not a career, and meet any change with existential threat.
+                    </p>
+                    <p class="font-serif text-2xl md:text-3xl font-medium leading-tight max-w-3xl">
+                        The challenge isn't information. It's <span class="text-ember italic">fear</span>. People physiologically cannot process change until they feel safe.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <div class="w-full h-px bg-white/5 mb-16"></div>
+
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-24">
+            <div class="lg:col-span-3">
+                <h2 class="font-mono text-[10px] uppercase tracking-[0.3em] font-bold text-ember mb-4">02 // The Path</h2>
+                <p class="font-serif italic text-lg opacity-60">Relationship as infrastructure.</p>
+            </div>
+            <div class="lg:col-span-9">
+                <div class="border-l-2 border-white/10 pl-8 py-2 space-y-6">
+                    <p class="text-fog text-xl leading-relaxed max-w-2xl">
+                        Carrie has discovered that <strong class="text-bone">relationship scales her work exponentially</strong>. She goes to the field, rides along, meets people face-to-face. When people see her as "the face of the thing," they transfer their positive response to her onto the change itself.
+                    </p>
+                    <p class="text-fog text-xl leading-relaxed max-w-2xl">
+                        She teaches leadership the neuroscience: when the amygdala senses threat, the lizard brain takes over. You can't access executive function until you've addressed the fear. So she starts there—acknowledging that resistance is okay, then showing the path through.
+                    </p>
+                    <p class="font-serif text-2xl md:text-3xl font-medium leading-tight max-w-3xl">
+                        "The person you're selling to doesn't have to do is iron out threats. People can't think logically about a change until they've <span class="text-ember italic">felt safe</span>."
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <div class="w-full h-px bg-white/5 mb-16"></div>
+
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-24">
+            <div class="lg:col-span-3">
+                <h2 class="font-mono text-[10px] uppercase tracking-[0.3em] font-bold text-ember mb-4">03 // The Purpose</h2>
+                <p class="font-serif italic text-lg opacity-60">The will to change.</p>
+            </div>
+            <div class="lg:col-span-9">
+                <div class="border-l-2 border-ember/50 pl-8 py-2">
+                    <p class="text-fog text-xl leading-relaxed max-w-2xl mb-6">
+                        Carrie sees the deep pattern: adults resist play because they've been taught that serious work can't be joyful. But when we were kids, we learned serious things through play. The dichotomy is false—and it's costing organizations everything.
+                    </p>
+                    <p class="font-serif text-2xl md:text-3xl font-medium leading-tight max-w-3xl mb-6">
+                        Her vision: bridge the gap between <span class="text-ember italic">experiential joy</span> and serious work. Prove that change doesn't have to feel like threat. It can feel like discovery.
+                    </p>
+                    <p class="text-fog text-lg leading-relaxed max-w-2xl">
+                        The work isn't about telling people to change. It's about understanding, at each level, what they're afraid of losing—then showing them they don't have to lose it.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <div class="w-full h-px bg-white/5 mb-16"></div>
+
+        <section class="mb-24">
+            <div class="flex items-baseline justify-between mb-12 border-b border-white/5 pb-6">
+                <h2 class="font-mono text-[10px] uppercase tracking-[0.3em] font-bold text-ember">Key Quotes</h2>
+            </div>
+            <div class="space-y-8">
+                <blockquote class="border-l-2 border-ember/30 pl-6">
+                    <p class="font-serif text-xl italic text-fog">
+                        "When they developed this item, the group that fails the most is MBA students. The group that does the best? Kindergartners. The first thing they do is shove that marshmallow on spaghetti."
+                    </p>
+                </blockquote>
+                <blockquote class="border-l-2 border-ember/30 pl-6">
+                    <p class="font-serif text-xl italic text-fog">
+                        "I have a disproportionate belief that if people meet me—if I'm the face of this thing—they have a positive response to me, they have a positive response to the thing they don't want to do."
+                    </p>
+                </blockquote>
+                <blockquote class="border-l-2 border-ember/30 pl-6">
+                    <p class="font-serif text-xl italic text-fog">
+                        "What's the cost of not trying something different? People every day are struggling, and as much as it feels like serious work is contributing, it simply isn't."
+                    </p>
+                </blockquote>
+            </div>
+        </section>
+
+        <div class="w-full h-px bg-white/5 mb-16"></div>
+
+        <section class="mb-24">
+            <div class="flex items-baseline justify-between mb-12 border-b border-white/5 pb-6">
+                <h2 class="font-mono text-[10px] uppercase tracking-[0.3em] font-bold text-ember">Next Steps</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="signal-card p-8">
+                    <h3 class="font-serif text-xl font-semibold mb-4 italic">Play/Work Event</h3>
+                    <p class="text-sm leading-relaxed opacity-70">
+                        Co-design an experience that bridges the gap—bring joy and play into environments where people feel it's "not allowed." Partner with experiential designers to prototype this.
+                    </p>
+                </div>
+                <div class="signal-card p-8">
+                    <h3 class="font-serif text-xl font-semibold mb-4 italic">The Will to Change</h3>
+                    <p class="text-sm leading-relaxed opacity-70">
+                        Read Bell Hooks' book and extract frameworks that apply to organizational change—not just gender dynamics, but human resistance to transformation.
+                    </p>
+                </div>
+                <div class="signal-card p-8">
+                    <h3 class="font-serif text-xl font-semibold mb-4 italic">Archetype Mapping</h3>
+                    <p class="text-sm leading-relaxed opacity-70">
+                        Document the patterns across different levels of the organization. What threatens each group? Build a playbook that speaks to each archetype's specific fears.
+                    </p>
+                </div>
+                <div class="signal-card p-8">
+                    <h3 class="font-serif text-xl font-semibold mb-4 italic">Leadership Neuroscience</h3>
+                    <p class="text-sm leading-relaxed opacity-70">
+                        Continue teaching the science of threat response to supervisors. When they understand why people resist, they can meet them where they are.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="border-t border-white/5 pt-12 mt-24">
+            <div class="flex justify-between items-center">
+                <span class="font-mono text-[10px] uppercase tracking-widest opacity-40">Generated by Patch 🦊</span>
+                <span class="font-mono text-[10px] uppercase tracking-widest opacity-40">January 30, 2026</span>
+            </div>
+        </footer>
+    </main>
+</body>
+</html>
