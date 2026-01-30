@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Recording // Patch Integration Brief</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=Newsreader:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        den: '#1A1612',
+                        ember: '#D97706',
+                        rust: '#B45309',
+                        bone: '#FAF7F2',
+                        bark: '#3D2E1F',
+                        moss: '#4A5944',
+                        fog: '#94A3B8',
+                    },
+                    fontFamily: {
+                        sans: ['IBM Plex Sans', 'sans-serif'],
+                        serif: ['Newsreader', 'serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #1A1612; color: #FAF7F2; }
+        .ember-gradient {
+            background: linear-gradient(135deg, #D97706 0%, #B45309 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .signal-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+        .signal-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: #D97706;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-bone">
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-den/95 backdrop-blur-md border-b border-white/5 h-16 flex items-center px-6 md:px-12">
+        <div class="max-w-screen-xl mx-auto w-full flex justify-between items-center">
+            <span class="font-mono text-[10px] uppercase tracking-[0.3em] font-bold opacity-60">Patch // Test Brief</span>
+            <span class="text-xl">🦊</span>
+        </div>
+    </nav>
+
+    <main class="max-w-screen-xl mx-auto px-6 md:px-12 pt-32 pb-24">
+        <header class="mb-24">
+            <div class="w-16 h-px bg-ember mb-8"></div>
+            <h1 class="font-serif text-5xl md:text-6xl font-light mb-4 opacity-80">Test Recording</h1>
+            <h2 class="font-serif text-3xl md:text-4xl font-medium ember-gradient tracking-tight mb-8">
+                The Loop Closes
+            </h2>
+            <p class="font-serif text-xl md:text-2xl text-fog italic leading-relaxed max-w-2xl">
+                "That's really fucking sick."
+            </p>
+            <div class="font-mono text-[10px] uppercase tracking-[0.2em] opacity-40 mt-6">
+                Integration Test // 01.30.26
+            </div>
+        </header>
+
+        <div class="w-full h-px bg-white/5 mb-16"></div>
+
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-24">
+            <div class="lg:col-span-3">
+                <h2 class="font-mono text-[10px] uppercase tracking-[0.3em] font-bold text-ember mb-4">01 // The Context</h2>
+                <p class="font-serif italic text-lg opacity-60">What's being tested.</p>
+            </div>
+            <div class="lg:col-span-9">
+                <div class="border-l-2 border-white/10 pl-8 py-2">
+                    <p class="text-fog text-xl leading-relaxed max-w-2xl mb-6">
+                        A full day of back-and-forth with Claude Code, exploring what's possible. The question: can an AI agent take a voice memo transcript, generate a brief using a custom framework, push it to GitHub, auto-deploy via Netlify, and return a shareable link?
+                    </p>
+                    <p class="font-serif text-2xl md:text-3xl font-medium leading-tight max-w-3xl">
+                        The answer: <span class="text-ember italic">yes</span>.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <div class="w-full h-px bg-white/5 mb-16"></div>
+
+        <section class="mb-24">
+            <div class="flex items-baseline justify-between mb-12 border-b border-white/5 pb-6">
+                <h2 class="font-mono text-[10px] uppercase tracking-[0.3em] font-bold text-ember">02 // The Flow</h2>
+                <span class="hidden md:block font-serif italic text-sm opacity-40">Voice → Text → Brief → Deploy → Link</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="signal-card p-8">
+                    <h3 class="font-serif text-xl font-semibold mb-4 italic">Record</h3>
+                    <p class="text-sm leading-relaxed opacity-70">
+                        Voice memo. Same workflow as always. No new apps, no friction. Just talk.
+                    </p>
+                </div>
+                <div class="signal-card p-8">
+                    <h3 class="font-serif text-xl font-semibold mb-4 italic">Paste</h3>
+                    <p class="text-sm leading-relaxed opacity-70">
+                        Copy transcript into Claude. The agent handles everything else — <strong class="text-ember">analysis, generation, deployment</strong>.
+                    </p>
+                </div>
+                <div class="signal-card p-8">
+                    <h3 class="font-serif text-xl font-semibold mb-4 italic">Share</h3>
+                    <p class="text-sm leading-relaxed opacity-70">
+                        Get a link. Show someone the brief <strong class="text-ember">right after the conversation ends</strong>. That's the demo.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <div class="w-full h-px bg-white/5 mb-16"></div>
+
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-24">
+            <div class="lg:col-span-3">
+                <h2 class="font-mono text-[10px] uppercase tracking-[0.3em] font-bold text-ember mb-4">03 // The Implication</h2>
+                <p class="font-serif italic text-lg opacity-60">What this enables.</p>
+            </div>
+            <div class="lg:col-span-9">
+                <div class="border-l-2 border-ember/50 pl-8 py-2">
+                    <p class="font-serif text-2xl md:text-3xl font-medium leading-tight max-w-3xl mb-6">
+                        "Let me show you what I do. Do you have 10 minutes?"
+                    </p>
+                    <p class="text-fog text-lg leading-relaxed max-w-2xl">
+                        Record the conversation. Do your thing. By the time you say goodbye, they have a link to a personalized brief that captures their story better than they could tell it themselves.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="border-t border-white/5 pt-12 mt-24">
+            <div class="flex justify-between items-center">
+                <span class="font-mono text-[10px] uppercase tracking-widest opacity-40">Generated by Patch</span>
+                <span class="font-mono text-[10px] uppercase tracking-widest opacity-40">January 30, 2026</span>
+            </div>
+        </footer>
+    </main>
+</body>
+</html>
