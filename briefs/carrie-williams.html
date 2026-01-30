@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrie Williams | The Architecture of Change</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --midnight: #0a0a0f;
+            --deep: #12121a;
+            --surface: #1a1a24;
+            --elevated: #242430;
+            --muted: #64648a;
+            --text: #e4e4ed;
+            --bright: #fafaff;
+            --coral: #ff6b6b;
+            --peach: #ffa07a;
+            --gold: #ffd700;
+            --sage: #98c9a3;
+            --sky: #87ceeb;
+            --lavender: #b8a9c9;
+            --gradient-warm: linear-gradient(135deg, #ff6b6b 0%, #ffa07a 50%, #ffd700 100%);
+            --gradient-cool: linear-gradient(135deg, #87ceeb 0%, #b8a9c9 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--midnight);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Animated background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-animation::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background:
+                radial-gradient(circle at 20% 80%, rgba(255, 107, 107, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(135, 206, 235, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 215, 0, 0.04) 0%, transparent 40%);
+            animation: drift 20s ease-in-out infinite;
+        }
+
+        @keyframes drift {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(2%, 2%) rotate(1deg); }
+            66% { transform: translate(-1%, 1%) rotate(-0.5deg); }
+        }
+
+        /* Hero section - The Tower */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .tower-container {
+            position: relative;
+            width: 200px;
+            height: 300px;
+            margin-bottom: 3rem;
+        }
+
+        /* Animated spaghetti tower - the marshmallow challenge */
+        .spaghetti {
+            position: absolute;
+            width: 3px;
+            background: linear-gradient(to top, var(--peach), var(--gold));
+            border-radius: 2px;
+            transform-origin: bottom center;
+            animation: sway 3s ease-in-out infinite;
+        }
+
+        .spaghetti:nth-child(1) { left: 50%; height: 180px; animation-delay: 0s; }
+        .spaghetti:nth-child(2) { left: 30%; height: 160px; transform: rotate(-15deg); animation-delay: 0.5s; }
+        .spaghetti:nth-child(3) { left: 70%; height: 160px; transform: rotate(15deg); animation-delay: 1s; }
+        .spaghetti:nth-child(4) { left: 40%; height: 140px; transform: rotate(-8deg); animation-delay: 0.3s; }
+        .spaghetti:nth-child(5) { left: 60%; height: 140px; transform: rotate(8deg); animation-delay: 0.7s; }
+
+        .marshmallow {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 35px;
+            background: var(--bright);
+            border-radius: 50% 50% 45% 45%;
+            box-shadow: 0 10px 40px rgba(255, 255, 255, 0.2);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes sway {
+            0%, 100% { transform: rotate(var(--base-rotate, 0deg)); }
+            50% { transform: rotate(calc(var(--base-rotate, 0deg) + 3deg)); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-8px); }
+        }
+
+        .hero-title {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 300;
+            text-align: center;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+            background: var(--gradient-warm);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 300;
+            font-style: italic;
+            color: var(--muted);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--muted);
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .scroll-indicator::after {
+            content: '';
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--muted), transparent);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Content sections */
+        .content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            padding: 6rem 0;
+            position: relative;
+        }
+
+        /* The Paradox - intro section */
+        .paradox {
+            text-align: center;
+            padding: 8rem 0;
+        }
+
+        .paradox-text {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 300;
+            line-height: 1.5;
+            color: var(--bright);
+        }
+
+        .paradox-text em {
+            font-style: italic;
+            background: var(--gradient-warm);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Brain visualization */
+        .brain-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            padding: 6rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .brain-section {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        .brain-visual {
+            position: relative;
+            aspect-ratio: 1;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .brain-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid;
+            animation: brain-pulse 4s ease-in-out infinite;
+        }
+
+        .brain-ring.outer {
+            inset: 0;
+            border-color: rgba(135, 206, 235, 0.3);
+            animation-delay: 0s;
+        }
+
+        .brain-ring.middle {
+            inset: 15%;
+            border-color: rgba(184, 169, 201, 0.4);
+            animation-delay: 0.5s;
+        }
+
+        .brain-ring.inner {
+            inset: 30%;
+            border-color: rgba(255, 107, 107, 0.5);
+            animation-delay: 1s;
+        }
+
+        .brain-ring.core {
+            inset: 42%;
+            background: radial-gradient(circle, var(--coral) 0%, transparent 70%);
+            border: none;
+            animation: core-glow 3s ease-in-out infinite;
+        }
+
+        .brain-label {
+            position: absolute;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--muted);
+        }
+
+        .brain-label.prefrontal { top: -25px; left: 50%; transform: translateX(-50%); color: var(--sky); }
+        .brain-label.limbic { right: -60px; top: 50%; transform: translateY(-50%); color: var(--lavender); }
+        .brain-label.amygdala { bottom: -25px; left: 50%; transform: translateX(-50%); color: var(--coral); }
+
+        @keyframes brain-pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.7; }
+        }
+
+        @keyframes core-glow {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+
+        .brain-text h2 {
+            font-family: 'Fraunces', serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 1.5rem;
+            color: var(--bright);
+        }
+
+        .brain-text p {
+            color: var(--text);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .brain-text .highlight {
+            color: var(--coral);
+            font-weight: 500;
+        }
+
+        /* Quote cards */
+        .quote-section {
+            padding: 8rem 0;
+        }
+
+        .quote-card {
+            background: var(--surface);
+            border-radius: 24px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--elevated);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .quote-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .quote-card::before {
+            content: '"';
+            position: absolute;
+            top: 1rem;
+            left: 2rem;
+            font-family: 'Fraunces', serif;
+            font-size: 8rem;
+            line-height: 1;
+            background: var(--gradient-warm);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0.15;
+        }
+
+        .quote-text {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(1.2rem, 3vw, 1.6rem);
+            font-weight: 300;
+            font-style: italic;
+            line-height: 1.6;
+            color: var(--bright);
+            position: relative;
+            z-index: 1;
+        }
+
+        .quote-context {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--elevated);
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        /* The Framework */
+        .framework {
+            padding: 8rem 0;
+        }
+
+        .framework-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .framework-header h2 {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 300;
+            color: var(--bright);
+            margin-bottom: 1rem;
+        }
+
+        .framework-header p {
+            color: var(--muted);
+            font-size: 1.1rem;
+        }
+
+        .pillars {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .pillars {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .pillar {
+            background: var(--deep);
+            border-radius: 20px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--surface);
+            transition: all 0.4s ease;
+        }
+
+        .pillar:hover {
+            border-color: var(--coral);
+            transform: translateY(-8px);
+        }
+
+        .pillar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-warm);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .pillar:hover::before {
+            transform: scaleX(1);
+        }
+
+        .pillar-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .pillar:nth-child(1) .pillar-icon { background: rgba(255, 107, 107, 0.15); }
+        .pillar:nth-child(2) .pillar-icon { background: rgba(255, 215, 0, 0.15); }
+        .pillar:nth-child(3) .pillar-icon { background: rgba(152, 201, 163, 0.15); }
+
+        .pillar h3 {
+            font-family: 'Fraunces', serif;
+            font-size: 1.3rem;
+            font-weight: 400;
+            color: var(--bright);
+            margin-bottom: 1rem;
+        }
+
+        .pillar p {
+            color: var(--text);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* The Bridge - transformation visual */
+        .bridge-section {
+            padding: 10rem 0;
+            position: relative;
+        }
+
+        .bridge-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .bridge-side {
+            flex: 1;
+            min-width: 200px;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .bridge-side h3 {
+            font-family: 'Fraunces', serif;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .bridge-side.from h3 { color: var(--muted); }
+        .bridge-side.to h3 { color: var(--sage); }
+
+        .bridge-side ul {
+            list-style: none;
+            font-size: 0.95rem;
+            color: var(--text);
+        }
+
+        .bridge-side ul li {
+            padding: 0.5rem 0;
+        }
+
+        .bridge-arrow {
+            font-size: 3rem;
+            color: var(--gold);
+            animation: arrow-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes arrow-pulse {
+            0%, 100% { transform: translateX(0); opacity: 0.5; }
+            50% { transform: translateX(10px); opacity: 1; }
+        }
+
+        /* Book reference */
+        .book-section {
+            padding: 6rem 0;
+            text-align: center;
+        }
+
+        .book-card {
+            display: inline-block;
+            background: var(--surface);
+            border-radius: 16px;
+            padding: 2rem 3rem;
+            border: 1px solid var(--elevated);
+        }
+
+        .book-card .label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .book-card .title {
+            font-family: 'Fraunces', serif;
+            font-size: 1.5rem;
+            font-style: italic;
+            color: var(--bright);
+            margin-bottom: 0.25rem;
+        }
+
+        .book-card .author {
+            color: var(--lavender);
+            font-size: 0.95rem;
+        }
+
+        /* Next steps */
+        .next-steps {
+            padding: 8rem 0;
+            background: var(--deep);
+            margin: 4rem -2rem;
+            padding-left: 2rem;
+            padding-right: 2rem;
+            border-radius: 32px;
+        }
+
+        .next-steps h2 {
+            font-family: 'Fraunces', serif;
+            font-size: 2rem;
+            font-weight: 400;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--bright);
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--surface);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .step:hover {
+            background: var(--elevated);
+            transform: translateX(8px);
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--gradient-warm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--midnight);
+            flex-shrink: 0;
+        }
+
+        .step-text {
+            color: var(--text);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            padding: 4rem 0;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+        .footer-date {
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--surface);
+            border-radius: 100px;
+            margin-top: 1rem;
+        }
+
+        /* Fade in animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+
+    <!-- Hero: The Marshmallow Tower -->
+    <section class="hero">
+        <div class="tower-container">
+            <div class="spaghetti" style="--base-rotate: 0deg;"></div>
+            <div class="spaghetti" style="--base-rotate: -15deg;"></div>
+            <div class="spaghetti" style="--base-rotate: 15deg;"></div>
+            <div class="spaghetti" style="--base-rotate: -8deg;"></div>
+            <div class="spaghetti" style="--base-rotate: 8deg;"></div>
+            <div class="marshmallow"></div>
+        </div>
+        <h1 class="hero-title">Carrie Williams</h1>
+        <p class="hero-subtitle">The Architecture of Change</p>
+        <div class="scroll-indicator">Explore</div>
+    </section>
+
+    <div class="content">
+        <!-- The Paradox -->
+        <section class="paradox fade-in">
+            <p class="paradox-text">
+                Kindergartners consistently outperform CEOs<br>
+                at the marshmallow challenge.<br><br>
+                <em>The secret? They play.</em>
+            </p>
+        </section>
+
+        <!-- The Brain -->
+        <section class="brain-section fade-in">
+            <div class="brain-visual">
+                <div class="brain-ring outer"></div>
+                <div class="brain-ring middle"></div>
+                <div class="brain-ring inner"></div>
+                <div class="brain-ring core"></div>
+                <span class="brain-label prefrontal">Prefrontal</span>
+                <span class="brain-label limbic">Limbic</span>
+                <span class="brain-label amygdala">Amygdala</span>
+            </div>
+            <div class="brain-text">
+                <h2>The Lizard Brain Problem</h2>
+                <p>When the amygdala senses threat, it hijacks the prefrontal cortex. <span class="highlight">Creativity shuts down. Risk-taking stops. We freeze.</span></p>
+                <p>In organizations built on fear of failure, this happens constantly. People stop iterating. Stop experimenting. Stop playing.</p>
+                <p>Carrie's work sits at this intersection: creating the psychological safety that lets the prefrontal cortex do its job.</p>
+            </div>
+        </section>
+
+        <!-- Quotes -->
+        <section class="quote-section">
+            <div class="quote-card fade-in">
+                <p class="quote-text">Play can be really serious. Serious play. When you're in this zone where you're not worried about making mistakes, you're more likely to push boundaries.</p>
+                <p class="quote-context">On the neuroscience of creativity and safety</p>
+            </div>
+
+            <div class="quote-card fade-in">
+                <p class="quote-text">Relationship is infrastructure. Without it, nothing else can run.</p>
+                <p class="quote-context">The foundation of organizational change</p>
+            </div>
+
+            <div class="quote-card fade-in">
+                <p class="quote-text">There's a lot of Bell Hooks in my work... especially 'The Will to Change.'</p>
+                <p class="quote-context">On influences and intellectual roots</p>
+            </div>
+        </section>
+
+        <!-- The Framework -->
+        <section class="framework fade-in">
+            <div class="framework-header">
+                <h2>The Transformation</h2>
+                <p>Three pillars of Carrie's approach</p>
+            </div>
+
+            <div class="pillars">
+                <div class="pillar">
+                    <div class="pillar-icon">🎯</div>
+                    <h3>The Problem</h3>
+                    <p>Organizations freeze in the face of change. Calgary's energy sector, military cultures—systems built on hierarchy and control create environments where innovation dies. The amygdala runs the show.</p>
+                </div>
+
+                <div class="pillar">
+                    <div class="pillar-icon">🛤</div>
+                    <h3>The Path</h3>
+                    <p>Working at the intersection of leadership coaching, organizational development, and applied neuroscience. Creating spaces where serious play becomes possible—where iteration replaces perfection.</p>
+                </div>
+
+                <div class="pillar">
+                    <div class="pillar-icon">🌱</div>
+                    <h3>The Purpose</h3>
+                    <p>To be the "relationship as infrastructure" that enables transformation. Building the trust that lets organizations take risks, fail safely, and ultimately evolve beyond their lizard brains.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Bridge -->
+        <section class="bridge-section fade-in">
+            <div class="bridge-container">
+                <div class="bridge-side from">
+                    <h3>From</h3>
+                    <ul>
+                        <li>Fear of failure</li>
+                        <li>Hierarchy over humanity</li>
+                        <li>Control as strategy</li>
+                        <li>Amygdala-driven decisions</li>
+                    </ul>
+                </div>
+                <div class="bridge-arrow">→</div>
+                <div class="bridge-side to">
+                    <h3>To</h3>
+                    <ul>
+                        <li>Safe-to-fail experiments</li>
+                        <li>Relationship as infrastructure</li>
+                        <li>Serious play</li>
+                        <li>Prefrontal freedom</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Book Reference -->
+        <section class="book-section fade-in">
+            <div class="book-card">
+                <p class="label">Currently Influenced By</p>
+                <p class="title">The Will to Change</p>
+                <p class="author">Bell Hooks</p>
+            </div>
+        </section>
+
+        <!-- Next Steps -->
+        <section class="next-steps fade-in">
+            <h2>Opportunities</h2>
+            <div class="steps-grid">
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <p class="step-text">Explore the "serious play" concept as a workshop format for leadership teams</p>
+                </div>
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <p class="step-text">Connect her neuroscience framework with practical organizational diagnostics</p>
+                </div>
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <p class="step-text">Potential collaboration on the intersection of change management and psychological safety</p>
+                </div>
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <p class="step-text">Introduce to others working on organizational transformation in rigid industries</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p class="footer-date">January 23, 2026</p>
+        <p>A conversation captured</p>
+        <div class="footer-tag">
+            <span>🦊</span>
+            <span>Patch Brief</span>
+        </div>
+    </footer>
+
+    <script>
+        // Intersection Observer for fade-in animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Parallax effect for hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero && scrolled < window.innerHeight) {
+                hero.style.transform = `translateY(${scrolled * 0.3}px)`;
+                hero.style.opacity = 1 - (scrolled / window.innerHeight);
+            }
+        });
+    </script>
+</body>
+</html>
