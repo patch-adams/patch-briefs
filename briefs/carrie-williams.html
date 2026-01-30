@@ -6,24 +6,37 @@
     <title>Carrie Williams | The Architecture of Change</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,200;1,9..144,300;1,9..144,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
     <style>
         :root {
+            --void: #050507;
             --midnight: #0a0a0f;
-            --deep: #12121a;
-            --surface: #1a1a24;
-            --elevated: #242430;
-            --muted: #64648a;
-            --text: #e4e4ed;
-            --bright: #fafaff;
+            --deep: #101018;
+            --surface: #18181f;
+            --elevated: #222230;
+            --border: #2a2a3a;
+            --muted: #6a6a8a;
+            --text: #c8c8d8;
+            --bright: #f0f0f8;
+            --white: #ffffff;
+
             --coral: #ff6b6b;
+            --coral-dim: rgba(255, 107, 107, 0.15);
             --peach: #ffa07a;
             --gold: #ffd700;
-            --sage: #98c9a3;
-            --sky: #87ceeb;
-            --lavender: #b8a9c9;
-            --gradient-warm: linear-gradient(135deg, #ff6b6b 0%, #ffa07a 50%, #ffd700 100%);
-            --gradient-cool: linear-gradient(135deg, #87ceeb 0%, #b8a9c9 100%);
+            --gold-dim: rgba(255, 215, 0, 0.1);
+            --amber: #f59e0b;
+            --sage: #10b981;
+            --sage-dim: rgba(16, 185, 129, 0.15);
+            --sky: #38bdf8;
+            --sky-dim: rgba(56, 189, 248, 0.1);
+            --lavender: #a78bfa;
+            --lavender-dim: rgba(167, 139, 250, 0.1);
+            --rose: #fb7185;
+
+            --gradient-warm: linear-gradient(135deg, #ff6b6b 0%, #ffa07a 40%, #ffd700 100%);
+            --gradient-sunset: linear-gradient(135deg, #ff6b6b 0%, #a78bfa 100%);
+            --gradient-ocean: linear-gradient(135deg, #38bdf8 0%, #a78bfa 50%, #fb7185 100%);
         }
 
         * {
@@ -34,355 +47,702 @@
 
         html {
             scroll-behavior: smooth;
+            font-size: 16px;
         }
 
         body {
             font-family: 'Inter', -apple-system, sans-serif;
-            background: var(--midnight);
+            background: var(--void);
             color: var(--text);
-            line-height: 1.7;
+            line-height: 1.6;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Animated background */
-        .bg-animation {
+        /* Noise texture overlay */
+        body::before {
+            content: '';
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
+            opacity: 0.03;
+            z-index: 10000;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Progress bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: var(--gradient-warm);
+            z-index: 9999;
+            transform-origin: left;
+            transform: scaleX(0);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            mix-blend-mode: difference;
+        }
+
+        .nav-logo {
+            font-family: 'Fraunces', serif;
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: var(--white);
+            letter-spacing: -0.02em;
+        }
+
+        .nav-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--white);
+            opacity: 0.6;
+        }
+
+        /* Floating elements */
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
             overflow: hidden;
         }
 
-        .bg-animation::before {
-            content: '';
+        .float-shape {
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background:
-                radial-gradient(circle at 20% 80%, rgba(255, 107, 107, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(135, 206, 235, 0.06) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(255, 215, 0, 0.04) 0%, transparent 40%);
-            animation: drift 20s ease-in-out infinite;
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: float-drift 20s ease-in-out infinite;
         }
 
-        @keyframes drift {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            33% { transform: translate(2%, 2%) rotate(1deg); }
-            66% { transform: translate(-1%, 1%) rotate(-0.5deg); }
+        .float-shape.one {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255, 107, 107, 0.12) 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
+            animation-delay: 0s;
         }
 
-        /* Hero section - The Tower */
+        .float-shape.two {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.08) 0%, transparent 70%);
+            bottom: 20%;
+            left: -150px;
+            animation-delay: -7s;
+        }
+
+        .float-shape.three {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(167, 139, 250, 0.1) 0%, transparent 70%);
+            top: 50%;
+            right: 10%;
+            animation-delay: -14s;
+        }
+
+        @keyframes float-drift {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -30px) scale(1.05); }
+            50% { transform: translate(-20px, 20px) scale(0.95); }
+            75% { transform: translate(20px, 10px) scale(1.02); }
+        }
+
+        /* Hero Section */
         .hero {
             min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @media (max-width: 968px) {
+            .hero {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+        }
+
+        .hero-content {
             display: flex;
             flex-direction: column;
             justify-content: center;
+            padding: 8rem 4rem 4rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        @media (max-width: 968px) {
+            .hero-content {
+                padding: 8rem 2rem 4rem;
+                min-height: 70vh;
+            }
+        }
+
+        .hero-eyebrow {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: var(--coral);
+            margin-bottom: 2rem;
+            display: flex;
             align-items: center;
-            padding: 2rem;
-            position: relative;
+            gap: 1rem;
         }
 
-        .tower-container {
-            position: relative;
-            width: 200px;
-            height: 300px;
-            margin-bottom: 3rem;
-        }
-
-        /* Animated spaghetti tower - the marshmallow challenge */
-        .spaghetti {
-            position: absolute;
-            width: 3px;
-            background: linear-gradient(to top, var(--peach), var(--gold));
-            border-radius: 2px;
-            transform-origin: bottom center;
-            animation: sway 3s ease-in-out infinite;
-        }
-
-        .spaghetti:nth-child(1) { left: 50%; height: 180px; animation-delay: 0s; }
-        .spaghetti:nth-child(2) { left: 30%; height: 160px; transform: rotate(-15deg); animation-delay: 0.5s; }
-        .spaghetti:nth-child(3) { left: 70%; height: 160px; transform: rotate(15deg); animation-delay: 1s; }
-        .spaghetti:nth-child(4) { left: 40%; height: 140px; transform: rotate(-8deg); animation-delay: 0.3s; }
-        .spaghetti:nth-child(5) { left: 60%; height: 140px; transform: rotate(8deg); animation-delay: 0.7s; }
-
-        .marshmallow {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+        .hero-eyebrow::before {
+            content: '';
             width: 40px;
-            height: 35px;
-            background: var(--bright);
-            border-radius: 50% 50% 45% 45%;
-            box-shadow: 0 10px 40px rgba(255, 255, 255, 0.2);
-            animation: float 4s ease-in-out infinite;
-        }
-
-        @keyframes sway {
-            0%, 100% { transform: rotate(var(--base-rotate, 0deg)); }
-            50% { transform: rotate(calc(var(--base-rotate, 0deg) + 3deg)); }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(-8px); }
+            height: 1px;
+            background: var(--coral);
         }
 
         .hero-title {
             font-family: 'Fraunces', serif;
-            font-size: clamp(2.5rem, 8vw, 5rem);
-            font-weight: 300;
-            text-align: center;
-            letter-spacing: -0.02em;
-            margin-bottom: 0.5rem;
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 200;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            color: var(--white);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-title span {
+            display: block;
+        }
+
+        .hero-title .accent {
             background: var(--gradient-warm);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            font-weight: 300;
         }
 
         .hero-subtitle {
             font-family: 'Fraunces', serif;
-            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-size: clamp(1.2rem, 2.5vw, 1.6rem);
             font-weight: 300;
             font-style: italic;
             color: var(--muted);
-            text-align: center;
-            margin-bottom: 2rem;
+            max-width: 400px;
+            margin-bottom: 3rem;
         }
 
-        .scroll-indicator {
+        .hero-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .tag {
+            padding: 0.5rem 1rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            color: var(--text);
+            transition: all 0.3s ease;
+        }
+
+        .tag:hover {
+            background: var(--elevated);
+            border-color: var(--coral);
+            color: var(--bright);
+        }
+
+        /* Hero Visual */
+        .hero-visual {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--deep) 0%, var(--midnight) 100%);
+            overflow: hidden;
+        }
+
+        @media (max-width: 968px) {
+            .hero-visual {
+                min-height: 50vh;
+            }
+        }
+
+        .tower-scene {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Abstract tower representation */
+        .tower {
+            position: relative;
+            width: 300px;
+            height: 400px;
+        }
+
+        .tower-line {
+            position: absolute;
+            width: 2px;
+            background: linear-gradient(to top, var(--coral), var(--gold));
+            border-radius: 2px;
+            bottom: 50px;
+            transform-origin: bottom center;
+        }
+
+        .tower-line:nth-child(1) { left: 50%; height: 250px; }
+        .tower-line:nth-child(2) { left: 35%; height: 200px; transform: rotate(-12deg); }
+        .tower-line:nth-child(3) { left: 65%; height: 200px; transform: rotate(12deg); }
+        .tower-line:nth-child(4) { left: 42%; height: 180px; transform: rotate(-6deg); }
+        .tower-line:nth-child(5) { left: 58%; height: 180px; transform: rotate(6deg); }
+        .tower-line:nth-child(6) { left: 30%; height: 120px; transform: rotate(-20deg); }
+        .tower-line:nth-child(7) { left: 70%; height: 120px; transform: rotate(20deg); }
+
+        .tower-node {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--white);
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+        }
+
+        .tower-node:nth-child(8) { top: 80px; left: calc(50% - 6px); animation: pulse-node 3s ease-in-out infinite; }
+        .tower-node:nth-child(9) { top: 140px; left: calc(35% - 6px); animation: pulse-node 3s ease-in-out infinite 0.5s; }
+        .tower-node:nth-child(10) { top: 140px; left: calc(65% - 6px); animation: pulse-node 3s ease-in-out infinite 1s; }
+        .tower-node:nth-child(11) { top: 200px; left: calc(42% - 6px); animation: pulse-node 3s ease-in-out infinite 1.5s; }
+        .tower-node:nth-child(12) { top: 200px; left: calc(58% - 6px); animation: pulse-node 3s ease-in-out infinite 2s; }
+
+        .marshmallow {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 45px;
+            background: var(--white);
+            border-radius: 50% 50% 45% 45%;
+            box-shadow: 0 0 60px rgba(255, 255, 255, 0.4), 0 20px 40px rgba(0, 0, 0, 0.3);
+            animation: marshmallow-float 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse-node {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.3); opacity: 1; }
+        }
+
+        @keyframes marshmallow-float {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-15px); }
+        }
+
+        .hero-visual-label {
             position: absolute;
             bottom: 3rem;
             left: 50%;
             transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--muted);
-            font-size: 0.75rem;
-            letter-spacing: 0.2em;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
             text-transform: uppercase;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        .scroll-indicator::after {
-            content: '';
-            width: 1px;
-            height: 40px;
-            background: linear-gradient(to bottom, var(--muted), transparent);
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.5; }
-            50% { opacity: 1; }
-        }
-
-        /* Content sections */
-        .content {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        section {
-            padding: 6rem 0;
-            position: relative;
-        }
-
-        /* The Paradox - intro section */
-        .paradox {
+            letter-spacing: 0.25em;
+            color: var(--muted);
             text-align: center;
-            padding: 8rem 0;
         }
 
-        .paradox-text {
+        /* Stats bar */
+        .stats-bar {
+            background: var(--deep);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 3rem 4rem;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            .stats-bar {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 2rem;
+            }
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
             font-family: 'Fraunces', serif;
-            font-size: clamp(1.5rem, 4vw, 2.5rem);
-            font-weight: 300;
-            line-height: 1.5;
-            color: var(--bright);
-        }
-
-        .paradox-text em {
-            font-style: italic;
+            font-size: 2.5rem;
+            font-weight: 200;
             background: var(--gradient-warm);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            margin-bottom: 0.5rem;
         }
 
-        /* Brain visualization */
-        .brain-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-            padding: 6rem 0;
+        .stat-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--muted);
+        }
+
+        /* Section styling */
+        section {
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-header {
+            padding: 6rem 4rem 4rem;
+            max-width: 800px;
         }
 
         @media (max-width: 768px) {
-            .brain-section {
-                grid-template-columns: 1fr;
-                gap: 2rem;
+            .section-header {
+                padding: 4rem 2rem 3rem;
             }
         }
 
-        .brain-visual {
+        .section-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--coral);
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 200;
+            color: var(--white);
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+        }
+
+        /* The Paradox */
+        .paradox-section {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem;
             position: relative;
-            aspect-ratio: 1;
-            max-width: 300px;
-            margin: 0 auto;
+        }
+
+        .paradox-content {
+            max-width: 900px;
+            text-align: center;
+        }
+
+        .paradox-text {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(1.8rem, 4vw, 3rem);
+            font-weight: 200;
+            line-height: 1.4;
+            color: var(--bright);
+            margin-bottom: 2rem;
+        }
+
+        .paradox-text strong {
+            font-weight: 400;
+            color: var(--white);
+        }
+
+        .paradox-highlight {
+            display: inline-block;
+            background: var(--gradient-warm);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 400;
+            font-style: italic;
+        }
+
+        .paradox-source {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--muted);
+            letter-spacing: 0.1em;
+        }
+
+        /* Quote Carousel */
+        .quotes-section {
+            padding: 6rem 0;
+            overflow: hidden;
+        }
+
+        .quotes-track {
+            display: flex;
+            gap: 2rem;
+            padding: 2rem 4rem;
+        }
+
+        .quote-card {
+            flex: 0 0 500px;
+            background: linear-gradient(135deg, var(--surface) 0%, var(--deep) 100%);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .quote-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient-warm);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .quote-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--elevated);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .quote-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .quote-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .quote-card:nth-child(1) .quote-icon { background: var(--coral-dim); }
+        .quote-card:nth-child(2) .quote-icon { background: var(--gold-dim); }
+        .quote-card:nth-child(3) .quote-icon { background: var(--lavender-dim); }
+        .quote-card:nth-child(4) .quote-icon { background: var(--sage-dim); }
+
+        .quote-text {
+            font-family: 'Fraunces', serif;
+            font-size: 1.25rem;
+            font-weight: 300;
+            font-style: italic;
+            line-height: 1.6;
+            color: var(--bright);
+            margin-bottom: 1.5rem;
+        }
+
+        .quote-context {
+            font-size: 0.8rem;
+            color: var(--muted);
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Brain Section */
+        .brain-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 100vh;
+        }
+
+        @media (max-width: 968px) {
+            .brain-section {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .brain-visual-container {
+            background: var(--deep);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brain-visualization {
+            position: relative;
+            width: 350px;
+            height: 350px;
         }
 
         .brain-ring {
             position: absolute;
             border-radius: 50%;
             border: 1px solid;
-            animation: brain-pulse 4s ease-in-out infinite;
+            transition: all 0.4s ease;
         }
 
         .brain-ring.outer {
             inset: 0;
-            border-color: rgba(135, 206, 235, 0.3);
-            animation-delay: 0s;
+            border-color: rgba(56, 189, 248, 0.3);
+            animation: ring-pulse 4s ease-in-out infinite;
         }
 
         .brain-ring.middle {
-            inset: 15%;
-            border-color: rgba(184, 169, 201, 0.4);
-            animation-delay: 0.5s;
+            inset: 18%;
+            border-color: rgba(167, 139, 250, 0.4);
+            animation: ring-pulse 4s ease-in-out infinite 1s;
         }
 
         .brain-ring.inner {
-            inset: 30%;
+            inset: 36%;
             border-color: rgba(255, 107, 107, 0.5);
-            animation-delay: 1s;
+            animation: ring-pulse 4s ease-in-out infinite 2s;
         }
 
         .brain-ring.core {
-            inset: 42%;
-            background: radial-gradient(circle, var(--coral) 0%, transparent 70%);
+            inset: 44%;
+            background: radial-gradient(circle, var(--coral) 0%, rgba(255, 107, 107, 0.3) 50%, transparent 70%);
             border: none;
-            animation: core-glow 3s ease-in-out infinite;
+            animation: core-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes ring-pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.03); opacity: 0.6; }
+        }
+
+        @keyframes core-pulse {
+            0%, 100% { opacity: 0.7; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.15); }
         }
 
         .brain-label {
             position: absolute;
-            font-size: 0.7rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
             text-transform: uppercase;
             letter-spacing: 0.15em;
-            color: var(--muted);
         }
 
-        .brain-label.prefrontal { top: -25px; left: 50%; transform: translateX(-50%); color: var(--sky); }
-        .brain-label.limbic { right: -60px; top: 50%; transform: translateY(-50%); color: var(--lavender); }
-        .brain-label.amygdala { bottom: -25px; left: 50%; transform: translateX(-50%); color: var(--coral); }
-
-        @keyframes brain-pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.7; }
+        .brain-label.prefrontal {
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--sky);
         }
 
-        @keyframes core-glow {
-            0%, 100% { opacity: 0.6; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.1); }
+        .brain-label.limbic {
+            right: -70px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--lavender);
         }
 
-        .brain-text h2 {
+        .brain-label.amygdala {
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--coral);
+        }
+
+        .brain-label.rational {
+            left: -80px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--sage);
+        }
+
+        .brain-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4rem;
+        }
+
+        .brain-content h2 {
             font-family: 'Fraunces', serif;
-            font-size: 1.8rem;
-            font-weight: 400;
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            font-weight: 200;
+            color: var(--white);
+            margin-bottom: 2rem;
+            line-height: 1.2;
+        }
+
+        .brain-content p {
+            font-size: 1.05rem;
+            line-height: 1.8;
             margin-bottom: 1.5rem;
-            color: var(--bright);
-        }
-
-        .brain-text p {
             color: var(--text);
-            margin-bottom: 1rem;
-            font-size: 1rem;
         }
 
-        .brain-text .highlight {
+        .brain-content .highlight {
             color: var(--coral);
             font-weight: 500;
         }
 
-        /* Quote cards */
-        .quote-section {
-            padding: 8rem 0;
-        }
-
-        .quote-card {
+        .brain-insight {
             background: var(--surface);
-            border-radius: 24px;
-            padding: 3rem;
-            margin-bottom: 2rem;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid var(--elevated);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 3px solid var(--coral);
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border-radius: 0 12px 12px 0;
         }
 
-        .quote-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
-
-        .quote-card::before {
-            content: '"';
-            position: absolute;
-            top: 1rem;
-            left: 2rem;
-            font-family: 'Fraunces', serif;
-            font-size: 8rem;
-            line-height: 1;
-            background: var(--gradient-warm);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            opacity: 0.15;
-        }
-
-        .quote-text {
-            font-family: 'Fraunces', serif;
-            font-size: clamp(1.2rem, 3vw, 1.6rem);
-            font-weight: 300;
+        .brain-insight p {
+            margin: 0;
             font-style: italic;
-            line-height: 1.6;
             color: var(--bright);
-            position: relative;
-            z-index: 1;
         }
 
-        .quote-context {
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--elevated);
-            font-size: 0.9rem;
-            color: var(--muted);
+        /* Framework Pillars */
+        .framework-section {
+            padding: 8rem 4rem;
+            background: linear-gradient(180deg, var(--void) 0%, var(--deep) 50%, var(--void) 100%);
         }
 
-        /* The Framework */
-        .framework {
-            padding: 8rem 0;
+        @media (max-width: 768px) {
+            .framework-section {
+                padding: 4rem 2rem;
+            }
         }
 
         .framework-header {
             text-align: center;
-            margin-bottom: 4rem;
+            max-width: 700px;
+            margin: 0 auto 5rem;
         }
 
         .framework-header h2 {
             font-family: 'Fraunces', serif;
-            font-size: clamp(2rem, 5vw, 3rem);
-            font-weight: 300;
-            color: var(--bright);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 200;
+            color: var(--white);
             margin-bottom: 1rem;
         }
 
@@ -391,31 +751,28 @@
             font-size: 1.1rem;
         }
 
-        .pillars {
+        .pillars-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
-        @media (max-width: 768px) {
-            .pillars {
+        @media (max-width: 968px) {
+            .pillars-grid {
                 grid-template-columns: 1fr;
             }
         }
 
         .pillar {
-            background: var(--deep);
-            border-radius: 20px;
+            background: linear-gradient(180deg, var(--surface) 0%, var(--deep) 100%);
+            border: 1px solid var(--border);
+            border-radius: 24px;
             padding: 2.5rem;
             position: relative;
             overflow: hidden;
-            border: 1px solid var(--surface);
-            transition: all 0.4s ease;
-        }
-
-        .pillar:hover {
-            border-color: var(--coral);
-            transform: translateY(-8px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .pillar::before {
@@ -423,391 +780,705 @@
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            height: 4px;
+            width: 100%;
+            height: 100%;
             background: var(--gradient-warm);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.4s ease;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .pillar:hover {
+            transform: translateY(-12px) scale(1.02);
+            border-color: transparent;
+            box-shadow: 0 40px 80px rgba(255, 107, 107, 0.15);
         }
 
         .pillar:hover::before {
-            transform: scaleX(1);
+            opacity: 0.05;
+        }
+
+        .pillar-number {
+            font-family: 'Fraunces', serif;
+            font-size: 4rem;
+            font-weight: 200;
+            background: var(--gradient-warm);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0.3;
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
         }
 
         .pillar-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
             margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
         }
 
-        .pillar:nth-child(1) .pillar-icon { background: rgba(255, 107, 107, 0.15); }
-        .pillar:nth-child(2) .pillar-icon { background: rgba(255, 215, 0, 0.15); }
-        .pillar:nth-child(3) .pillar-icon { background: rgba(152, 201, 163, 0.15); }
+        .pillar:nth-child(1) .pillar-icon { background: var(--coral-dim); }
+        .pillar:nth-child(2) .pillar-icon { background: var(--gold-dim); }
+        .pillar:nth-child(3) .pillar-icon { background: var(--sage-dim); }
 
         .pillar h3 {
             font-family: 'Fraunces', serif;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             font-weight: 400;
-            color: var(--bright);
+            color: var(--white);
             margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
         }
 
         .pillar p {
             color: var(--text);
             font-size: 0.95rem;
             line-height: 1.7;
+            position: relative;
+            z-index: 1;
         }
 
-        /* The Bridge - transformation visual */
-        .bridge-section {
-            padding: 10rem 0;
+        .pillar-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .pillar-tag {
+            padding: 0.3rem 0.8rem;
+            background: var(--elevated);
+            border-radius: 100px;
+            font-size: 0.7rem;
+            color: var(--muted);
+        }
+
+        /* Transformation */
+        .transformation-section {
+            padding: 8rem 4rem;
             position: relative;
         }
 
-        .bridge-container {
-            display: flex;
+        .transformation-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 3rem;
             align-items: center;
-            justify-content: space-between;
-            gap: 2rem;
-            flex-wrap: wrap;
         }
 
-        .bridge-side {
-            flex: 1;
-            min-width: 200px;
-            text-align: center;
+        @media (max-width: 968px) {
+            .transformation-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+
+        .transform-column {
             padding: 2rem;
         }
 
-        .bridge-side h3 {
+        .transform-column h3 {
             font-family: 'Fraunces', serif;
             font-size: 1.5rem;
-            margin-bottom: 1rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
         }
 
-        .bridge-side.from h3 { color: var(--muted); }
-        .bridge-side.to h3 { color: var(--sage); }
+        .transform-column.from h3 { color: var(--muted); }
+        .transform-column.to h3 { color: var(--sage); }
 
-        .bridge-side ul {
+        .transform-list {
             list-style: none;
-            font-size: 0.95rem;
+        }
+
+        .transform-list li {
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 1rem;
             color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
-        .bridge-side ul li {
-            padding: 0.5rem 0;
+        .transform-list li::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
         }
 
-        .bridge-arrow {
-            font-size: 3rem;
+        .transform-column.from .transform-list li::before { background: var(--coral); }
+        .transform-column.to .transform-list li::before { background: var(--sage); }
+
+        .transform-arrow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .arrow-line {
+            width: 2px;
+            height: 100px;
+            background: linear-gradient(to bottom, var(--coral), var(--sage));
+        }
+
+        .arrow-icon {
+            font-size: 2rem;
             color: var(--gold);
-            animation: arrow-pulse 2s ease-in-out infinite;
+            animation: arrow-bounce 2s ease-in-out infinite;
         }
 
-        @keyframes arrow-pulse {
-            0%, 100% { transform: translateX(0); opacity: 0.5; }
-            50% { transform: translateX(10px); opacity: 1; }
+        @keyframes arrow-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(10px); }
         }
 
-        /* Book reference */
+        /* Book Section */
         .book-section {
-            padding: 6rem 0;
-            text-align: center;
+            padding: 6rem 4rem;
+            display: flex;
+            justify-content: center;
         }
 
         .book-card {
-            display: inline-block;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
             background: var(--surface);
-            border-radius: 16px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
             padding: 2rem 3rem;
-            border: 1px solid var(--elevated);
+            transition: all 0.3s ease;
         }
 
-        .book-card .label {
-            font-size: 0.75rem;
+        .book-card:hover {
+            border-color: var(--lavender);
+            box-shadow: 0 20px 40px rgba(167, 139, 250, 0.1);
+        }
+
+        .book-visual {
+            width: 80px;
+            height: 110px;
+            background: linear-gradient(135deg, var(--lavender) 0%, var(--coral) 100%);
+            border-radius: 4px 12px 12px 4px;
+            box-shadow: -5px 5px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .book-info .label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
             text-transform: uppercase;
-            letter-spacing: 0.15em;
+            letter-spacing: 0.2em;
             color: var(--muted);
             margin-bottom: 0.5rem;
         }
 
-        .book-card .title {
+        .book-info .title {
             font-family: 'Fraunces', serif;
             font-size: 1.5rem;
             font-style: italic;
-            color: var(--bright);
+            color: var(--white);
             margin-bottom: 0.25rem;
         }
 
-        .book-card .author {
+        .book-info .author {
             color: var(--lavender);
             font-size: 0.95rem;
         }
 
-        /* Next steps */
-        .next-steps {
-            padding: 8rem 0;
+        /* Next Steps */
+        .next-section {
+            padding: 8rem 4rem;
             background: var(--deep);
-            margin: 4rem -2rem;
-            padding-left: 2rem;
-            padding-right: 2rem;
-            border-radius: 32px;
         }
 
-        .next-steps h2 {
-            font-family: 'Fraunces', serif;
-            font-size: 2rem;
-            font-weight: 400;
+        .next-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .next-header {
             text-align: center;
-            margin-bottom: 3rem;
-            color: var(--bright);
+            margin-bottom: 4rem;
         }
 
-        .steps-grid {
+        .next-header h2 {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 200;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        .next-header p {
+            color: var(--muted);
+        }
+
+        .next-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
             gap: 1.5rem;
         }
 
-        .step {
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-            padding: 1.5rem;
+        @media (max-width: 768px) {
+            .next-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .next-item {
             background: var(--surface);
-            border-radius: 12px;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
             transition: all 0.3s ease;
         }
 
-        .step:hover {
+        .next-item:hover {
             background: var(--elevated);
+            border-color: var(--coral);
             transform: translateX(8px);
         }
 
-        .step-number {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
+        .next-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
             background: var(--gradient-warm);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 600;
-            font-size: 0.85rem;
-            color: var(--midnight);
+            font-size: 0.9rem;
+            color: var(--void);
             flex-shrink: 0;
         }
 
-        .step-text {
-            color: var(--text);
-            font-size: 0.95rem;
+        .next-content h4 {
+            font-family: 'Fraunces', serif;
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        .next-content p {
+            font-size: 0.9rem;
+            color: var(--muted);
             line-height: 1.6;
         }
 
         /* Footer */
         footer {
-            padding: 4rem 0;
+            padding: 6rem 4rem;
             text-align: center;
-            color: var(--muted);
-            font-size: 0.85rem;
+            position: relative;
         }
 
-        .footer-date {
-            font-family: 'JetBrains Mono', monospace;
-            margin-bottom: 0.5rem;
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 10%;
+            right: 10%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
         }
 
-        .footer-tag {
+        .footer-brand {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
             background: var(--surface);
+            border: 1px solid var(--border);
             border-radius: 100px;
-            margin-top: 1rem;
+            margin-bottom: 2rem;
         }
 
-        /* Fade in animations */
-        .fade-in {
+        .footer-brand span:first-child {
+            font-size: 1.25rem;
+        }
+
+        .footer-brand span:last-child {
+            font-family: 'Fraunces', serif;
+            font-size: 0.9rem;
+            color: var(--bright);
+        }
+
+        .footer-meta {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-meta-item {
+            text-align: center;
+        }
+
+        .footer-meta-item .label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .footer-meta-item .value {
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+
+        .footer-copyright {
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+
+        /* Scroll animations */
+        .reveal {
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .fade-in.visible {
+        .reveal.visible {
             opacity: 1;
             transform: translateY(0);
         }
+
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
     </style>
 </head>
 <body>
-    <div class="bg-animation"></div>
+    <div class="progress-bar" id="progressBar"></div>
 
-    <!-- Hero: The Marshmallow Tower -->
+    <div class="floating-elements">
+        <div class="float-shape one"></div>
+        <div class="float-shape two"></div>
+        <div class="float-shape three"></div>
+    </div>
+
+    <nav>
+        <div class="nav-logo">Carrie Williams</div>
+        <div class="nav-date">01.23.2026</div>
+    </nav>
+
+    <!-- Hero -->
     <section class="hero">
-        <div class="tower-container">
-            <div class="spaghetti" style="--base-rotate: 0deg;"></div>
-            <div class="spaghetti" style="--base-rotate: -15deg;"></div>
-            <div class="spaghetti" style="--base-rotate: 15deg;"></div>
-            <div class="spaghetti" style="--base-rotate: -8deg;"></div>
-            <div class="spaghetti" style="--base-rotate: 8deg;"></div>
-            <div class="marshmallow"></div>
+        <div class="hero-content">
+            <div class="hero-eyebrow">Brief</div>
+            <h1 class="hero-title">
+                <span>The</span>
+                <span class="accent">Architecture</span>
+                <span>of Change</span>
+            </h1>
+            <p class="hero-subtitle">On organizational transformation, the neuroscience of safety, and why kindergartners build better towers than CEOs.</p>
+            <div class="hero-tags">
+                <span class="tag">Change Management</span>
+                <span class="tag">Organizational Psychology</span>
+                <span class="tag">Leadership</span>
+                <span class="tag">Neuroscience</span>
+            </div>
         </div>
-        <h1 class="hero-title">Carrie Williams</h1>
-        <p class="hero-subtitle">The Architecture of Change</p>
-        <div class="scroll-indicator">Explore</div>
+        <div class="hero-visual">
+            <div class="tower-scene">
+                <div class="tower">
+                    <div class="tower-line"></div>
+                    <div class="tower-line"></div>
+                    <div class="tower-line"></div>
+                    <div class="tower-line"></div>
+                    <div class="tower-line"></div>
+                    <div class="tower-line"></div>
+                    <div class="tower-line"></div>
+                    <div class="tower-node"></div>
+                    <div class="tower-node"></div>
+                    <div class="tower-node"></div>
+                    <div class="tower-node"></div>
+                    <div class="tower-node"></div>
+                    <div class="marshmallow"></div>
+                </div>
+            </div>
+            <div class="hero-visual-label">The Marshmallow Challenge</div>
+        </div>
     </section>
 
-    <div class="content">
-        <!-- The Paradox -->
-        <section class="paradox fade-in">
-            <p class="paradox-text">
-                Kindergartners consistently outperform CEOs<br>
-                at the marshmallow challenge.<br><br>
-                <em>The secret? They play.</em>
-            </p>
-        </section>
+    <!-- Stats -->
+    <div class="stats-bar">
+        <div class="stat reveal">
+            <div class="stat-value">15+</div>
+            <div class="stat-label">Years Experience</div>
+        </div>
+        <div class="stat reveal reveal-delay-1">
+            <div class="stat-value">Calgary</div>
+            <div class="stat-label">Base</div>
+        </div>
+        <div class="stat reveal reveal-delay-2">
+            <div class="stat-value">Energy</div>
+            <div class="stat-label">Sector Focus</div>
+        </div>
+        <div class="stat reveal reveal-delay-3">
+            <div class="stat-value">OD</div>
+            <div class="stat-label">Specialization</div>
+        </div>
+    </div>
 
-        <!-- The Brain -->
-        <section class="brain-section fade-in">
-            <div class="brain-visual">
+    <!-- Paradox -->
+    <section class="paradox-section">
+        <div class="paradox-content reveal">
+            <p class="paradox-text">
+                In the marshmallow challenge, <strong>kindergartners consistently outperform CEOs</strong>.
+                They don't plan. They don't strategize. They don't worry about status.
+                <br><br>
+                <span class="paradox-highlight">They just play.</span>
+            </p>
+            <p class="paradox-source">— Tom Wujec, TED Talk</p>
+        </div>
+    </section>
+
+    <!-- Quotes -->
+    <section class="quotes-section">
+        <div class="section-header reveal">
+            <div class="section-number">01 — In Her Words</div>
+            <h2 class="section-title">Conversations on Change</h2>
+        </div>
+        <div class="quotes-track">
+            <div class="quote-card reveal">
+                <div class="quote-icon">💡</div>
+                <p class="quote-text">"Play can be really serious. Serious play. When you're in this zone where you're not worried about making mistakes, you're more likely to push boundaries."</p>
+                <p class="quote-context">On the neuroscience of creativity</p>
+            </div>
+            <div class="quote-card reveal reveal-delay-1">
+                <div class="quote-icon">🔗</div>
+                <p class="quote-text">"Relationship is infrastructure. Without it, nothing else can run."</p>
+                <p class="quote-context">On organizational foundations</p>
+            </div>
+            <div class="quote-card reveal reveal-delay-2">
+                <div class="quote-icon">📚</div>
+                <p class="quote-text">"There's a lot of Bell Hooks in my work... especially 'The Will to Change.'"</p>
+                <p class="quote-context">On intellectual influences</p>
+            </div>
+            <div class="quote-card reveal reveal-delay-3">
+                <div class="quote-icon">🧠</div>
+                <p class="quote-text">"When the amygdala fires, the prefrontal cortex goes offline. Creativity, risk-taking—they just stop."</p>
+                <p class="quote-context">On the threat response</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brain Section -->
+    <section class="brain-section">
+        <div class="brain-visual-container">
+            <div class="brain-visualization reveal">
                 <div class="brain-ring outer"></div>
                 <div class="brain-ring middle"></div>
                 <div class="brain-ring inner"></div>
                 <div class="brain-ring core"></div>
-                <span class="brain-label prefrontal">Prefrontal</span>
-                <span class="brain-label limbic">Limbic</span>
+                <span class="brain-label prefrontal">Prefrontal Cortex</span>
+                <span class="brain-label limbic">Limbic System</span>
                 <span class="brain-label amygdala">Amygdala</span>
+                <span class="brain-label rational">Rational Mind</span>
             </div>
-            <div class="brain-text">
-                <h2>The Lizard Brain Problem</h2>
-                <p>When the amygdala senses threat, it hijacks the prefrontal cortex. <span class="highlight">Creativity shuts down. Risk-taking stops. We freeze.</span></p>
-                <p>In organizations built on fear of failure, this happens constantly. People stop iterating. Stop experimenting. Stop playing.</p>
-                <p>Carrie's work sits at this intersection: creating the psychological safety that lets the prefrontal cortex do its job.</p>
+        </div>
+        <div class="brain-content">
+            <h2 class="reveal">The Lizard Brain Problem</h2>
+            <p class="reveal reveal-delay-1">When the amygdala senses threat—real or perceived—it hijacks the prefrontal cortex. <span class="highlight">Creativity shuts down. Risk-taking stops.</span> The body prepares to fight or flee.</p>
+            <p class="reveal reveal-delay-2">In organizations built on fear of failure, status anxiety, and hierarchical pressure, this happens constantly. People stop iterating. Stop experimenting. Stop playing.</p>
+            <p class="reveal reveal-delay-3">Carrie's work sits at this intersection: creating the psychological safety that lets the prefrontal cortex do its job—innovating, collaborating, building.</p>
+            <div class="brain-insight reveal">
+                <p>"The goal isn't to eliminate fear. It's to create environments where fear doesn't run the show."</p>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Quotes -->
-        <section class="quote-section">
-            <div class="quote-card fade-in">
-                <p class="quote-text">Play can be really serious. Serious play. When you're in this zone where you're not worried about making mistakes, you're more likely to push boundaries.</p>
-                <p class="quote-context">On the neuroscience of creativity and safety</p>
-            </div>
-
-            <div class="quote-card fade-in">
-                <p class="quote-text">Relationship is infrastructure. Without it, nothing else can run.</p>
-                <p class="quote-context">The foundation of organizational change</p>
-            </div>
-
-            <div class="quote-card fade-in">
-                <p class="quote-text">There's a lot of Bell Hooks in my work... especially 'The Will to Change.'</p>
-                <p class="quote-context">On influences and intellectual roots</p>
-            </div>
-        </section>
-
-        <!-- The Framework -->
-        <section class="framework fade-in">
-            <div class="framework-header">
-                <h2>The Transformation</h2>
-                <p>Three pillars of Carrie's approach</p>
-            </div>
-
-            <div class="pillars">
-                <div class="pillar">
-                    <div class="pillar-icon">🎯</div>
-                    <h3>The Problem</h3>
-                    <p>Organizations freeze in the face of change. Calgary's energy sector, military cultures—systems built on hierarchy and control create environments where innovation dies. The amygdala runs the show.</p>
-                </div>
-
-                <div class="pillar">
-                    <div class="pillar-icon">🛤</div>
-                    <h3>The Path</h3>
-                    <p>Working at the intersection of leadership coaching, organizational development, and applied neuroscience. Creating spaces where serious play becomes possible—where iteration replaces perfection.</p>
-                </div>
-
-                <div class="pillar">
-                    <div class="pillar-icon">🌱</div>
-                    <h3>The Purpose</h3>
-                    <p>To be the "relationship as infrastructure" that enables transformation. Building the trust that lets organizations take risks, fail safely, and ultimately evolve beyond their lizard brains.</p>
+    <!-- Framework -->
+    <section class="framework-section">
+        <div class="framework-header reveal">
+            <h2>The P3 Framework</h2>
+            <p>Understanding where Carrie stands</p>
+        </div>
+        <div class="pillars-grid">
+            <div class="pillar reveal">
+                <span class="pillar-number">01</span>
+                <div class="pillar-icon">🎯</div>
+                <h3>The Problem</h3>
+                <p>Organizations freeze in the face of change. Calgary's energy sector, military-adjacent cultures—systems built on hierarchy and control create environments where innovation dies. The amygdala runs the show, and nobody builds anything worth building.</p>
+                <div class="pillar-tags">
+                    <span class="pillar-tag">Fear Response</span>
+                    <span class="pillar-tag">Hierarchy</span>
+                    <span class="pillar-tag">Control</span>
                 </div>
             </div>
-        </section>
-
-        <!-- The Bridge -->
-        <section class="bridge-section fade-in">
-            <div class="bridge-container">
-                <div class="bridge-side from">
-                    <h3>From</h3>
-                    <ul>
-                        <li>Fear of failure</li>
-                        <li>Hierarchy over humanity</li>
-                        <li>Control as strategy</li>
-                        <li>Amygdala-driven decisions</li>
-                    </ul>
-                </div>
-                <div class="bridge-arrow">→</div>
-                <div class="bridge-side to">
-                    <h3>To</h3>
-                    <ul>
-                        <li>Safe-to-fail experiments</li>
-                        <li>Relationship as infrastructure</li>
-                        <li>Serious play</li>
-                        <li>Prefrontal freedom</li>
-                    </ul>
+            <div class="pillar reveal reveal-delay-1">
+                <span class="pillar-number">02</span>
+                <div class="pillar-icon">🛤️</div>
+                <h3>The Path</h3>
+                <p>Working at the intersection of leadership coaching, organizational development, and applied neuroscience. Creating spaces where serious play becomes possible—where iteration replaces perfection, and failure is just data.</p>
+                <div class="pillar-tags">
+                    <span class="pillar-tag">OD</span>
+                    <span class="pillar-tag">Coaching</span>
+                    <span class="pillar-tag">Neuroscience</span>
                 </div>
             </div>
-        </section>
+            <div class="pillar reveal reveal-delay-2">
+                <span class="pillar-number">03</span>
+                <div class="pillar-icon">🌱</div>
+                <h3>The Purpose</h3>
+                <p>To be the "relationship as infrastructure" that enables transformation. Building the trust that lets organizations take risks, fail safely, and ultimately evolve beyond their collective lizard brains.</p>
+                <div class="pillar-tags">
+                    <span class="pillar-tag">Trust</span>
+                    <span class="pillar-tag">Safety</span>
+                    <span class="pillar-tag">Growth</span>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        <!-- Book Reference -->
-        <section class="book-section fade-in">
-            <div class="book-card">
+    <!-- Transformation -->
+    <section class="transformation-section">
+        <div class="section-header reveal">
+            <div class="section-number">03 — The Shift</div>
+            <h2 class="section-title">From Fear to Flow</h2>
+        </div>
+        <div class="transformation-container">
+            <div class="transform-column from reveal">
+                <h3>From</h3>
+                <ul class="transform-list">
+                    <li>Fear of failure</li>
+                    <li>Hierarchy over humanity</li>
+                    <li>Control as strategy</li>
+                    <li>Amygdala-driven decisions</li>
+                    <li>Perfection paralysis</li>
+                </ul>
+            </div>
+            <div class="transform-arrow reveal">
+                <div class="arrow-line"></div>
+                <div class="arrow-icon">→</div>
+                <div class="arrow-line"></div>
+            </div>
+            <div class="transform-column to reveal">
+                <h3>To</h3>
+                <ul class="transform-list">
+                    <li>Safe-to-fail experiments</li>
+                    <li>Relationship as infrastructure</li>
+                    <li>Serious play</li>
+                    <li>Prefrontal freedom</li>
+                    <li>Iterative excellence</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Book -->
+    <section class="book-section">
+        <div class="book-card reveal">
+            <div class="book-visual">📖</div>
+            <div class="book-info">
                 <p class="label">Currently Influenced By</p>
                 <p class="title">The Will to Change</p>
                 <p class="author">Bell Hooks</p>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Next Steps -->
-        <section class="next-steps fade-in">
-            <h2>Opportunities</h2>
-            <div class="steps-grid">
-                <div class="step">
-                    <span class="step-number">1</span>
-                    <p class="step-text">Explore the "serious play" concept as a workshop format for leadership teams</p>
+    <!-- Next Steps -->
+    <section class="next-section">
+        <div class="next-container">
+            <div class="next-header reveal">
+                <h2>Opportunities</h2>
+                <p>Potential paths forward</p>
+            </div>
+            <div class="next-grid">
+                <div class="next-item reveal">
+                    <div class="next-number">1</div>
+                    <div class="next-content">
+                        <h4>Serious Play Workshop</h4>
+                        <p>Develop the "serious play" concept into a workshop format for leadership teams struggling with innovation.</p>
+                    </div>
                 </div>
-                <div class="step">
-                    <span class="step-number">2</span>
-                    <p class="step-text">Connect her neuroscience framework with practical organizational diagnostics</p>
+                <div class="next-item reveal reveal-delay-1">
+                    <div class="next-number">2</div>
+                    <div class="next-content">
+                        <h4>Neuroscience Framework</h4>
+                        <p>Connect her amygdala/prefrontal framework with practical organizational diagnostics.</p>
+                    </div>
                 </div>
-                <div class="step">
-                    <span class="step-number">3</span>
-                    <p class="step-text">Potential collaboration on the intersection of change management and psychological safety</p>
+                <div class="next-item reveal reveal-delay-2">
+                    <div class="next-number">3</div>
+                    <div class="next-content">
+                        <h4>Collaboration</h4>
+                        <p>Explore partnership on the intersection of change management and psychological safety.</p>
+                    </div>
                 </div>
-                <div class="step">
-                    <span class="step-number">4</span>
-                    <p class="step-text">Introduce to others working on organizational transformation in rigid industries</p>
+                <div class="next-item reveal reveal-delay-3">
+                    <div class="next-number">4</div>
+                    <div class="next-content">
+                        <h4>Network Introduction</h4>
+                        <p>Connect with others working on organizational transformation in rigid industries.</p>
+                    </div>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+    </section>
 
+    <!-- Footer -->
     <footer>
-        <p class="footer-date">January 23, 2026</p>
-        <p>A conversation captured</p>
-        <div class="footer-tag">
+        <div class="footer-brand">
             <span>🦊</span>
             <span>Patch Brief</span>
         </div>
+        <div class="footer-meta">
+            <div class="footer-meta-item">
+                <p class="label">Captured</p>
+                <p class="value">January 23, 2026</p>
+            </div>
+            <div class="footer-meta-item">
+                <p class="label">Location</p>
+                <p class="value">Calgary, AB</p>
+            </div>
+            <div class="footer-meta-item">
+                <p class="label">Duration</p>
+                <p class="value">~45 min</p>
+            </div>
+        </div>
+        <p class="footer-copyright">A conversation, distilled.</p>
     </footer>
 
     <script>
-        // Intersection Observer for fade-in animations
+        // Progress bar
+        const progressBar = document.getElementById('progressBar');
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = scrollTop / docHeight;
+            progressBar.style.transform = `scaleX(${progress})`;
+        });
+
+        // Reveal on scroll
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -816,22 +1487,29 @@
             });
         }, {
             threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
+            rootMargin: '0px 0px -80px 0px'
         });
 
-        document.querySelectorAll('.fade-in').forEach(el => {
-            observer.observe(el);
-        });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-        // Parallax effect for hero
+        // Parallax for floating elements
         window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const hero = document.querySelector('.hero');
-            if (hero && scrolled < window.innerHeight) {
-                hero.style.transform = `translateY(${scrolled * 0.3}px)`;
-                hero.style.opacity = 1 - (scrolled / window.innerHeight);
-            }
+            const scrolled = window.scrollY;
+            document.querySelectorAll('.float-shape').forEach((shape, i) => {
+                const speed = 0.05 + (i * 0.02);
+                shape.style.transform = `translateY(${scrolled * speed}px)`;
+            });
         });
+
+        // Horizontal scroll for quotes on smaller screens
+        const quotesTrack = document.querySelector('.quotes-track');
+        if (window.innerWidth <= 968) {
+            quotesTrack.style.overflowX = 'auto';
+            quotesTrack.style.scrollSnapType = 'x mandatory';
+            quotesTrack.querySelectorAll('.quote-card').forEach(card => {
+                card.style.scrollSnapAlign = 'start';
+            });
+        }
     </script>
 </body>
 </html>
