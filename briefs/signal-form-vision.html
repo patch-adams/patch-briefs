@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signal Form | A Studio in the Distance</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;900&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Firewatch-inspired palette */
+            --sky-top: #2d1b4e;
+            --sky-mid: #5c3d6e;
+            --sky-warm: #8b4d62;
+            --horizon: #d4735c;
+            --sun-glow: #f5a962;
+            --sun-bright: #ffd700;
+            --silhouette-far: #1a1428;
+            --silhouette-mid: #0f0d18;
+            --silhouette-near: #080610;
+            --text-light: #fef6e8;
+            --text-muted: rgba(254, 246, 232, 0.6);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Archivo', sans-serif;
+            background: var(--silhouette-near);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Parallax Hero */
+        .parallax-container {
+            position: relative;
+            height: 100vh;
+            min-height: 600px;
+            overflow: hidden;
+        }
+
+        .parallax-layer {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-size: cover;
+            background-position: bottom center;
+            background-repeat: no-repeat;
+        }
+
+        /* Sky gradient */
+        .layer-sky {
+            top: 0;
+            bottom: 0;
+            background: linear-gradient(
+                to bottom,
+                var(--sky-top) 0%,
+                var(--sky-mid) 30%,
+                var(--sky-warm) 50%,
+                var(--horizon) 70%,
+                var(--sun-glow) 85%,
+                var(--sun-bright) 100%
+            );
+        }
+
+        /* Sun */
+        .sun {
+            position: absolute;
+            bottom: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, var(--sun-bright) 0%, var(--sun-glow) 40%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        /* Mountain silhouettes - far */
+        .layer-mountains-far {
+            height: 45%;
+            background: var(--silhouette-far);
+            clip-path: polygon(
+                0% 100%,
+                0% 60%,
+                5% 55%,
+                15% 70%,
+                25% 45%,
+                35% 55%,
+                45% 35%,
+                55% 50%,
+                65% 30%,
+                75% 45%,
+                85% 55%,
+                95% 40%,
+                100% 50%,
+                100% 100%
+            );
+        }
+
+        /* Mountains mid */
+        .layer-mountains-mid {
+            height: 35%;
+            background: var(--silhouette-mid);
+            clip-path: polygon(
+                0% 100%,
+                0% 70%,
+                10% 55%,
+                20% 65%,
+                30% 40%,
+                40% 50%,
+                50% 35%,
+                60% 55%,
+                70% 45%,
+                80% 60%,
+                90% 50%,
+                100% 65%,
+                100% 100%
+            );
+        }
+
+        /* Trees/foreground */
+        .layer-foreground {
+            height: 25%;
+            background: var(--silhouette-near);
+            clip-path: polygon(
+                0% 100%,
+                0% 40%,
+                3% 35%,
+                5% 45%,
+                8% 30%,
+                10% 50%,
+                12% 35%,
+                15% 55%,
+                18% 40%,
+                20% 60%,
+                25% 45%,
+                28% 65%,
+                32% 50%,
+                35% 70%,
+                40% 55%,
+                45% 75%,
+                50% 60%,
+                55% 80%,
+                60% 65%,
+                65% 55%,
+                70% 70%,
+                75% 50%,
+                78% 60%,
+                82% 45%,
+                85% 55%,
+                88% 40%,
+                92% 50%,
+                95% 35%,
+                98% 45%,
+                100% 50%,
+                100% 100%
+            );
+        }
+
+        /* Hero content */
+        .hero-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -60%);
+            text-align: center;
+            z-index: 10;
+        }
+
+        .hero-title {
+            font-family: 'Archivo', sans-serif;
+            font-size: clamp(3rem, 10vw, 7rem);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            text-transform: uppercase;
+            line-height: 0.9;
+            color: var(--silhouette-near);
+            text-shadow: 0 2px 40px rgba(255, 215, 0, 0.3);
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-family: 'Libre Baskerville', serif;
+            font-size: clamp(1rem, 2vw, 1.4rem);
+            font-style: italic;
+            color: var(--silhouette-mid);
+            text-shadow: 0 1px 20px rgba(255, 215, 0, 0.2);
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 8%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            text-align: center;
+        }
+
+        .scroll-indicator span {
+            display: block;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3em;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .scroll-indicator::after {
+            content: '';
+            display: block;
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--text-muted), transparent);
+            margin: 0 auto;
+            animation: scroll-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes scroll-pulse {
+            0%, 100% { opacity: 0.3; transform: scaleY(1); }
+            50% { opacity: 1; transform: scaleY(1.2); }
+        }
+
+        /* Content sections */
+        .content {
+            background: var(--silhouette-near);
+            position: relative;
+            z-index: 20;
+        }
+
+        section {
+            padding: 8rem 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Typography */
+        h2 {
+            font-family: 'Archivo', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.01em;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            color: var(--sun-glow);
+        }
+
+        p {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 1.1rem;
+            line-height: 1.9;
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        p.lead {
+            font-size: 1.3rem;
+            color: var(--sun-glow);
+        }
+
+        /* Horizontal rule */
+        hr {
+            border: none;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--horizon), transparent);
+            margin: 6rem 0;
+        }
+
+        /* The Vision section */
+        .vision-block {
+            border-left: 3px solid var(--sun-glow);
+            padding-left: 2rem;
+            margin: 3rem 0;
+        }
+
+        .vision-block p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        /* Quote styling */
+        blockquote {
+            font-family: 'Libre Baskerville', serif;
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+            font-style: italic;
+            line-height: 1.6;
+            color: var(--text-light);
+            margin: 4rem 0;
+            padding: 0;
+            position: relative;
+        }
+
+        blockquote::before {
+            content: '"';
+            font-family: 'Archivo', sans-serif;
+            font-size: 6rem;
+            font-weight: 900;
+            color: var(--sun-glow);
+            opacity: 0.2;
+            position: absolute;
+            top: -2rem;
+            left: -1rem;
+            line-height: 1;
+        }
+
+        blockquote cite {
+            display: block;
+            font-size: 0.9rem;
+            font-style: normal;
+            color: var(--text-muted);
+            margin-top: 1rem;
+        }
+
+        /* Timeline */
+        .timeline {
+            margin: 4rem 0;
+        }
+
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 2rem;
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(212, 115, 92, 0.2);
+        }
+
+        .timeline-item:last-child {
+            border-bottom: none;
+        }
+
+        .timeline-date {
+            font-family: 'Archivo', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--sun-glow);
+        }
+
+        .timeline-content h3 {
+            font-family: 'Archivo', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-content p {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        /* The People */
+        .people-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .person {
+            text-align: center;
+        }
+
+        .person-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--horizon), var(--sun-glow));
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Archivo', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--silhouette-near);
+        }
+
+        .person-name {
+            font-family: 'Archivo', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 0.25rem;
+        }
+
+        .person-role {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 0.85rem;
+            font-style: italic;
+            color: var(--text-muted);
+        }
+
+        /* Numbers */
+        .numbers {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 4rem 0;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            .numbers {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .number-item {
+            padding: 2rem;
+        }
+
+        .number-value {
+            font-family: 'Archivo', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 900;
+            color: var(--sun-glow);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .number-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+        }
+
+        /* Final section - the horizon */
+        .horizon-section {
+            background: linear-gradient(to bottom, var(--silhouette-near), var(--silhouette-mid));
+            padding: 10rem 2rem;
+            text-align: center;
+        }
+
+        .horizon-section h2 {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .horizon-section p {
+            max-width: 600px;
+            margin: 0 auto;
+            color: var(--text-muted);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--silhouette-mid);
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .footer-date {
+            font-family: 'Archivo', sans-serif;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .footer-brand {
+            font-family: 'Libre Baskerville', serif;
+            font-style: italic;
+            font-size: 0.9rem;
+            color: var(--sun-glow);
+        }
+
+        /* Parallax scroll effect */
+        @media (min-width: 768px) {
+            .layer-mountains-far {
+                transform: translateY(0);
+                transition: transform 0.1s ease-out;
+            }
+            .layer-mountains-mid {
+                transform: translateY(0);
+                transition: transform 0.1s ease-out;
+            }
+            .layer-foreground {
+                transform: translateY(0);
+                transition: transform 0.1s ease-out;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Parallax Hero -->
+    <div class="parallax-container">
+        <div class="parallax-layer layer-sky"></div>
+        <div class="sun"></div>
+        <div class="parallax-layer layer-mountains-far" data-speed="0.3"></div>
+        <div class="parallax-layer layer-mountains-mid" data-speed="0.5"></div>
+        <div class="parallax-layer layer-foreground" data-speed="0.8"></div>
+
+        <div class="hero-content">
+            <h1 class="hero-title">Signal Form</h1>
+            <p class="hero-subtitle">A studio in the distance</p>
+        </div>
+
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+
+        <section>
+            <p class="lead">In September 2026, there is a studio. It is small—four, maybe five people—but it is not small in what it does.</p>
+
+            <p>The studio exists because a government client said something unexpected. She said: <em>"What do you need to make stuff happen?"</em> And then she said: <em>"I'll support whatever you propose."</em></p>
+
+            <p>That was the moment. Not a pitch. Not a proposal. A door, opening.</p>
+
+            <hr>
+
+            <h2>The Premise</h2>
+
+            <p>Large institutions hire large consultancies. The consultancies staff projects with strategists—people who make PowerPoints and one-pagers and decks that say what should happen without ever making it happen.</p>
+
+            <p>But sometimes the client doesn't want more strategy. They want things. Interactive things. Experiences. Products that work differently than a PDF or a 30-second video.</p>
+
+            <p>The studio makes those things.</p>
+
+            <div class="vision-block">
+                <p>It is not an agency. It is not a consultancy. It is a production house with strategic capability—or a strategy practice with production muscle. The distinction matters less than the outcome: things get made.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>The People</h2>
+
+            <p>The studio is built from people who have worked together before. They know how each other think. They have shorthand. They've shipped work under pressure and covered for each other when things went sideways.</p>
+
+            <div class="people-grid">
+                <div class="person">
+                    <div class="person-avatar">M</div>
+                    <div class="person-name">Mike</div>
+                    <div class="person-role">Creative Direction</div>
+                </div>
+                <div class="person">
+                    <div class="person-avatar">G</div>
+                    <div class="person-name">Greg</div>
+                    <div class="person-role">Operations & Strategy</div>
+                </div>
+                <div class="person">
+                    <div class="person-avatar">B</div>
+                    <div class="person-name">Ben</div>
+                    <div class="person-role">Design</div>
+                </div>
+                <div class="person">
+                    <div class="person-avatar">R</div>
+                    <div class="person-name">Rob</div>
+                    <div class="person-role">Design</div>
+                </div>
+                <div class="person">
+                    <div class="person-avatar">A</div>
+                    <div class="person-name">Ashley</div>
+                    <div class="person-role">Production</div>
+                </div>
+            </div>
+
+            <p>Some of them came from VCS, a creative team inside a large corporation that did good work until the corporation decided good work was not the priority. The studio is what VCS might have been if no one was watching.</p>
+        </section>
+
+        <section>
+            <h2>The Structure</h2>
+
+            <p>The studio is not trying to become a large consultancy. It does not want hundreds of employees or offices in multiple cities. It wants to remain small enough that everyone knows everyone, and large enough to take on meaningful work.</p>
+
+            <div class="numbers">
+                <div class="number-item">
+                    <div class="number-value">5</div>
+                    <div class="number-label">People</div>
+                </div>
+                <div class="number-item">
+                    <div class="number-value">20</div>
+                    <div class="number-label">Hours / Week</div>
+                </div>
+                <div class="number-item">
+                    <div class="number-value">1</div>
+                    <div class="number-label">Client at a Time</div>
+                </div>
+            </div>
+
+            <p>The model is simple: one major client, deep focus, eight-week sprints. When the sprint ends, there's a thing. Not a deck about a thing. The thing itself.</p>
+        </section>
+
+        <section>
+            <blockquote>
+                "This is how this stuff happens. People that have worked together for a long time, know each other, and then everyone gets a little more senior, a little more experienced, and someone takes a chance and does a thing and gets lucky."
+                <cite>— Greg, January 2026</cite>
+            </blockquote>
+        </section>
+
+        <section>
+            <h2>The Path</h2>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">Feb 2026</div>
+                    <div class="timeline-content">
+                        <h3>The Proof</h3>
+                        <p>First sprint with existing client. Three creatives, eight weeks. Deliver something that makes the old way look prehistoric.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Jun 2026</div>
+                    <div class="timeline-content">
+                        <h3>The Demo</h3>
+                        <p>One government conference. One QR code. One interactive experience that shows what the studio can do. Doors open.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Sep 2026</div>
+                    <div class="timeline-content">
+                        <h3>The Transition</h3>
+                        <p>Contract vehicle expires. The client says: we'd like to continue, directly. No intermediaries. The studio becomes the studio.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">2027</div>
+                    <div class="timeline-content">
+                        <h3>The Expansion</h3>
+                        <p>A second client. Then a third. The model holds. The team grows, carefully. The work stays good.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>The Question</h2>
+
+            <p>Greg has been here before. He watched a three-person shop grow to ten in four years. He knows the paperwork, the pitfalls, the moments when you have to push back and the moments when you have to just figure it out.</p>
+
+            <p>The question Mike asked was simple:</p>
+
+            <blockquote>
+                "What would it take to do this together?"
+            </blockquote>
+
+            <p>And Greg's answer, after a long pause:</p>
+
+            <blockquote>
+                "This interests me so much more than I expected. This could be the career transition I've been wanting to do for five years—to actually build a business in a field where I have some confidence."
+                <cite>— Greg</cite>
+            </blockquote>
+
+            <p>That's not a yes. But it's not a no.</p>
+        </section>
+
+        <section class="horizon-section">
+            <h2>The Horizon</h2>
+            <p>The studio doesn't exist yet. But it could. The client gave the keys. The team is available. The timing is strange and perfect. All that remains is to walk toward it.</p>
+        </section>
+
+    </div>
+
+    <footer>
+        <p class="footer-date">January 30, 2026 · Late Night</p>
+        <p class="footer-brand">A conversation between Mike and Greg</p>
+    </footer>
+
+    <script>
+        // Simple parallax on scroll
+        const container = document.querySelector('.parallax-container');
+        const layers = document.querySelectorAll('.parallax-layer[data-speed]');
+        const sun = document.querySelector('.sun');
+        const heroContent = document.querySelector('.hero-content');
+
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const containerHeight = container.offsetHeight;
+
+            if (scrolled < containerHeight) {
+                layers.forEach(layer => {
+                    const speed = parseFloat(layer.dataset.speed);
+                    layer.style.transform = `translateY(${scrolled * speed * 0.5}px)`;
+                });
+
+                sun.style.transform = `translateX(-50%) translateY(${scrolled * 0.3}px)`;
+                sun.style.opacity = 1 - (scrolled / containerHeight);
+
+                heroContent.style.transform = `translate(-50%, -60%) translateY(${scrolled * 0.4}px)`;
+                heroContent.style.opacity = 1 - (scrolled / (containerHeight * 0.7));
+            }
+        });
+    </script>
+
+</body>
+</html>
