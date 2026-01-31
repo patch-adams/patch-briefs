@@ -814,11 +814,205 @@ Everything essential should be visible without scrolling:
 
 ---
 
+## Quality Assurance Checklist
+
+### Post-Creation Review Process
+
+After generating any brief, run through this checklist before deploying:
+
+#### 1. Structural Integrity
+- [ ] Page loads without console errors
+- [ ] All fonts load correctly (check Network tab)
+- [ ] No broken/missing images or assets
+- [ ] Scroll behavior works smoothly
+- [ ] All animations trigger correctly
+- [ ] No layout shifts during load
+
+#### 2. Responsive Testing
+Check at these breakpoints:
+- [ ] 1440px (Desktop large)
+- [ ] 1024px (Desktop small / Tablet landscape)
+- [ ] 768px (Tablet portrait)
+- [ ] 375px (Mobile)
+
+Common breakage points:
+- Hero text overflow
+- Grid collapse behavior
+- Card padding on mobile
+- Navigation functionality
+- Quote text sizing
+
+#### 3. Content Accuracy
+- [ ] Name spelled correctly
+- [ ] Date is accurate
+- [ ] Quotes are verbatim from transcript
+- [ ] No hallucinated details
+- [ ] Context matches the conversation
+
+#### 4. Visual Polish
+- [ ] Consistent spacing throughout
+- [ ] Text hierarchy is clear
+- [ ] Color contrast passes WCAG
+- [ ] Hover states work on all interactive elements
+- [ ] No orphaned words in headlines
+- [ ] Cards/sections feel balanced
+
+#### 5. Performance
+- [ ] File size under 100KB (HTML)
+- [ ] No render-blocking resources
+- [ ] Animations are smooth (60fps)
+- [ ] Page loads in <3s on 3G
+
+#### 6. Originality Check (NEW - Critical)
+- [ ] What makes this brief visually unique?
+- [ ] Did I use more than 3 "default" techniques?
+- [ ] Could this pass as human-designed?
+- [ ] Is there at least one unexpected design choice?
+
+---
+
+## Avoiding the AI Aesthetic
+
+### The Problem
+
+AI-generated designs have tells. Recognizing them is the first step to avoiding them.
+
+### Common AI Design Tells
+
+| Tell | Why It Happens | How to Avoid |
+|------|----------------|--------------|
+| Warm gradient on everything | Training data overfit to Dribbble 2020-2023 | Single accent color, or unexpected palette |
+| Emoji as icons | Low-effort visual shorthand | No icons, or custom SVG, or Unicode symbols |
+| Symmetrical bento grids | Safe, predictable layout | Break the grid, overlap elements, extreme whitespace |
+| Dark mode + noise + glass | "Premium" aesthetic clichés stacked | Pick ONE effect, do it exceptionally |
+| Floating gradient orbs | Every AI landing page has them | Remove entirely, or use photography/illustration |
+| Perfect polish | No intentional imperfection | Add tension, asymmetry, hand-drawn elements |
+| Predictable section order | Hero→Stats→Cards→Quotes→CTA | Unexpected flow, editorial pacing |
+| Generic metaphors | "Keys to castle", "bridge", "journey" | Specific, weird, memorable concepts |
+
+### Constraint = Creativity
+
+The best way to avoid AI aesthetic: **impose constraints**.
+
+**Color constraint:**
+- Only black + one accent color
+- Only warm tones OR only cool tones
+- Monochrome with texture variation
+
+**Layout constraint:**
+- Single column only
+- No cards at all
+- Everything left-aligned
+- Massive whitespace (80% of viewport)
+
+**Typography constraint:**
+- One font family only
+- Only two sizes (huge headlines, small body)
+- No bold weights anywhere
+
+**Effect constraint:**
+- No gradients
+- No animations
+- No rounded corners
+- No shadows
+
+### What Real Designers Do Differently
+
+1. **Reference obsessively** - Study one specific site and emulate its choices
+2. **Limit the palette** - 2-3 colors max, used with discipline
+3. **Create tension** - Something should feel slightly "wrong" but intentional
+4. **Embrace imperfection** - Hand-drawn lines, irregular shapes, texture
+5. **Editorial thinking** - Design like a magazine spread, not a SaaS landing page
+6. **Kill your darlings** - Remove the thing you're most attached to
+7. **Whitespace courage** - Leave more empty than filled
+
+### Anti-Pattern Exercises
+
+Before each brief, try one of these:
+
+1. **The Subtraction Game**: Design it, then remove 50% of the elements
+2. **The One-Color Challenge**: Entire design with single hue
+3. **The No-Cards Rule**: Convey all information without card containers
+4. **The Print Test**: Design as if it will be printed in a magazine
+5. **The Brutalist Sprint**: Deliberately ugly, but intentional
+
+---
+
+## Creative Direction Framework
+
+### How We Should Collaborate
+
+The briefs improve when Mike provides specific creative direction. Here's a framework:
+
+### Direction Levels
+
+**Level 1: Vibe Words**
+Give me 2-3 adjectives:
+- "Brutal, minimal, confident"
+- "Warm, organic, handmade"
+- "Corporate but weird"
+- "90s web revival"
+
+**Level 2: Reference Sites**
+Point me to 1-2 specific sites to emulate:
+- "Make it feel like [specific Awwwards site]"
+- "The typography treatment from [specific portfolio]"
+- "The scroll behavior on [specific URL]"
+
+**Level 3: Anti-Direction**
+Tell me what to avoid:
+- "No gradients"
+- "Don't use the standard section order"
+- "No rounded corners"
+- "Kill the noise texture"
+
+**Level 4: Concept Direction**
+Give me a metaphor or concept to design around:
+- "Design it like a ransom note"
+- "This person is a knife, not a butter knife"
+- "Think Wes Anderson credits"
+- "Make it feel like a classified document"
+
+### Feedback Loop
+
+After each brief, quick feedback:
+
+1. **What worked?** (Keep for next time)
+2. **What felt AI-ish?** (Avoid next time)
+3. **What was missing?** (Add to the system)
+4. **Wild card idea?** (Let's try something weird)
+
+### Per-Brief Creative Brief
+
+For important briefs, give me:
+
+```
+NAME: [Full name]
+VIBE: [2-3 adjectives]
+REFERENCE: [URL or "surprise me"]
+AVOID: [Things not to do]
+CONCEPT: [Optional metaphor/theme]
+RISK LEVEL: [Safe / Medium / Weird]
+```
+
+Example:
+```
+NAME: Carrie Williams
+VIBE: Academic, warm, subversive
+REFERENCE: https://godly.website/website/831-monopo-tokyo
+AVOID: Gradients, floating orbs, bento grid
+CONCEPT: A dissertation that became a zine
+RISK LEVEL: Medium-Weird
+```
+
+---
+
 ## Changelog
 
 | Date | Update |
 |------|--------|
 | 2026-01-30 | Initial creation with comprehensive research |
+| 2026-01-31 | Added QA Checklist, Anti-AI Aesthetic guide, Creative Direction Framework |
 
 ---
 
