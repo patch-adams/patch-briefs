@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greg | The War Room</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,200;0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Dark Mode Foundation - from Design System */
+            --void: #050507;
+            --midnight: #0a0a0f;
+            --deep: #101018;
+            --surface: #18181f;
+            --elevated: #222230;
+            --border: #2a2a3a;
+            --muted: #6a6a8a;
+            --text: #c8c8d8;
+            --bright: #f0f0f8;
+            --white: #ffffff;
+
+            /* Accent Colors - Desaturated for dark mode */
+            --ember: #f97316;
+            --ember-dim: rgba(249, 115, 22, 0.15);
+            --gold: #eab308;
+            --gold-dim: rgba(234, 179, 8, 0.12);
+            --red: #ef4444;
+            --red-dim: rgba(239, 68, 68, 0.15);
+            --green: #22c55e;
+            --green-dim: rgba(34, 197, 94, 0.12);
+            --blue: #3b82f6;
+            --blue-dim: rgba(59, 130, 246, 0.12);
+
+            /* Gradients */
+            --gradient-fire: linear-gradient(135deg, #ef4444 0%, #f97316 50%, #eab308 100%);
+            --gradient-money: linear-gradient(135deg, #22c55e 0%, #eab308 100%);
+            --gradient-strategy: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--void);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Noise Texture Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            opacity: 0.035;
+            z-index: 10000;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--gradient-fire);
+            z-index: 9999;
+            transform-origin: left;
+            transform: scaleX(0);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            background: rgba(5, 5, 7, 0.7);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-status {
+            padding: 0.35rem 0.75rem;
+            background: var(--red-dim);
+            border: 1px solid var(--red);
+            border-radius: 100px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 500;
+            color: var(--red);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            animation: pulse-status 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-status {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .nav-title {
+            font-family: 'Fraunces', serif;
+            font-size: 1rem;
+            color: var(--bright);
+        }
+
+        .nav-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+
+        /* Floating Background */
+        .bg-elements {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bg-shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            animation: drift 25s ease-in-out infinite;
+        }
+
+        .bg-shape.one {
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(249, 115, 22, 0.08) 0%, transparent 70%);
+            top: -300px;
+            right: -300px;
+        }
+
+        .bg-shape.two {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(34, 197, 94, 0.06) 0%, transparent 70%);
+            bottom: 10%;
+            left: -200px;
+            animation-delay: -10s;
+        }
+
+        .bg-shape.three {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.07) 0%, transparent 70%);
+            top: 40%;
+            right: 5%;
+            animation-delay: -18s;
+        }
+
+        @keyframes drift {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(40px, -40px) scale(1.1); }
+            66% { transform: translate(-30px, 30px) scale(0.95); }
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 8rem 4rem 4rem;
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 7rem 2rem 3rem;
+            }
+        }
+
+        .hero-eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .hero-eyebrow-line {
+            width: 60px;
+            height: 2px;
+            background: var(--gradient-fire);
+        }
+
+        .hero-eyebrow-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.25em;
+            color: var(--ember);
+        }
+
+        .hero-title {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(3.5rem, 10vw, 8rem);
+            font-weight: 200;
+            line-height: 1;
+            letter-spacing: -0.04em;
+            color: var(--white);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-title .line {
+            display: block;
+            overflow: hidden;
+        }
+
+        .hero-title .accent {
+            background: var(--gradient-fire);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 300;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            color: var(--text);
+            max-width: 600px;
+            margin-bottom: 3rem;
+            line-height: 1.7;
+        }
+
+        .hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .meta-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--muted);
+        }
+
+        .meta-value {
+            font-size: 1rem;
+            color: var(--bright);
+        }
+
+        .meta-value.highlight {
+            color: var(--ember);
+            font-weight: 500;
+        }
+
+        /* Section Styles */
+        section {
+            position: relative;
+            z-index: 2;
+            padding: 6rem 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            section {
+                padding: 4rem 2rem;
+            }
+        }
+
+        .section-header {
+            margin-bottom: 4rem;
+        }
+
+        .section-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--ember);
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 200;
+            color: var(--white);
+            line-height: 1.2;
+        }
+
+        /* The Situation - Bento Grid */
+        .situation-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            grid-auto-rows: minmax(180px, auto);
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 968px) {
+            .situation-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .bento-card {
+            background: linear-gradient(135deg, var(--surface) 0%, var(--deep) 100%);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .bento-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--elevated);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .bento-card.featured {
+            grid-column: span 4;
+            grid-row: span 2;
+        }
+
+        .bento-card.tall {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        .bento-card.wide {
+            grid-column: span 3;
+        }
+
+        @media (max-width: 968px) {
+            .bento-card.featured,
+            .bento-card.tall,
+            .bento-card.wide {
+                grid-column: span 2;
+            }
+        }
+
+        .bento-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .bento-icon.fire { background: var(--ember-dim); }
+        .bento-icon.money { background: var(--green-dim); }
+        .bento-icon.warning { background: var(--red-dim); }
+        .bento-icon.strategy { background: var(--blue-dim); }
+        .bento-icon.gold { background: var(--gold-dim); }
+
+        .bento-card h3 {
+            font-family: 'Fraunces', serif;
+            font-size: 1.3rem;
+            font-weight: 400;
+            color: var(--white);
+            margin-bottom: 0.75rem;
+        }
+
+        .bento-card p {
+            font-size: 0.95rem;
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        .bento-card .stat {
+            font-family: 'Fraunces', serif;
+            font-size: 3rem;
+            font-weight: 200;
+            margin-bottom: 0.5rem;
+        }
+
+        .bento-card .stat.fire {
+            background: var(--gradient-fire);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .bento-card .stat.money {
+            background: var(--gradient-money);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Quote Section */
+        .quotes-section {
+            padding: 8rem 4rem;
+            background: var(--deep);
+            margin: 0 -4rem;
+            position: relative;
+        }
+
+        @media (max-width: 768px) {
+            .quotes-section {
+                padding: 4rem 2rem;
+                margin: 0 -2rem;
+            }
+        }
+
+        .quotes-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .quote-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            position: relative;
+            transition: all 0.4s ease;
+        }
+
+        .quote-card:hover {
+            transform: translateX(8px);
+            border-color: var(--ember);
+        }
+
+        .quote-card::before {
+            content: '"';
+            position: absolute;
+            top: 1.5rem;
+            left: 2rem;
+            font-family: 'Fraunces', serif;
+            font-size: 6rem;
+            line-height: 1;
+            background: var(--gradient-fire);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0.2;
+        }
+
+        .quote-text {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+            font-weight: 300;
+            font-style: italic;
+            line-height: 1.6;
+            color: var(--bright);
+            position: relative;
+            z-index: 1;
+        }
+
+        .quote-attribution {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .quote-speaker {
+            font-size: 0.85rem;
+            color: var(--ember);
+            font-weight: 500;
+        }
+
+        .quote-context {
+            font-size: 0.8rem;
+            color: var(--muted);
+        }
+
+        /* The Play - Strategy Section */
+        .strategy-section {
+            padding: 8rem 4rem;
+        }
+
+        .strategy-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        @media (max-width: 968px) {
+            .strategy-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+        }
+
+        .strategy-column h3 {
+            font-family: 'Fraunces', serif;
+            font-size: 1.8rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .strategy-column h3::before {
+            content: '';
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .strategy-column.problem h3 { color: var(--red); }
+        .strategy-column.problem h3::before { background: var(--red); }
+
+        .strategy-column.solution h3 { color: var(--green); }
+        .strategy-column.solution h3::before { background: var(--green); }
+
+        .strategy-list {
+            list-style: none;
+        }
+
+        .strategy-list li {
+            padding: 1.25rem 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 1rem;
+            color: var(--text);
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            line-height: 1.6;
+        }
+
+        .strategy-list li::before {
+            content: '→';
+            color: var(--muted);
+            flex-shrink: 0;
+        }
+
+        /* Numbers Section */
+        .numbers-section {
+            padding: 6rem 4rem;
+            background: linear-gradient(180deg, var(--void) 0%, var(--deep) 50%, var(--void) 100%);
+        }
+
+        .numbers-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        @media (max-width: 968px) {
+            .numbers-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .number-card {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .number-value {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 200;
+            margin-bottom: 0.5rem;
+        }
+
+        .number-value.fire {
+            background: var(--gradient-fire);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .number-value.money {
+            background: var(--gradient-money);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .number-value.blue {
+            background: var(--gradient-strategy);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .number-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--muted);
+        }
+
+        /* The Vision Timeline */
+        .timeline-section {
+            padding: 8rem 4rem;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 24px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--ember), var(--green));
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 70px;
+            padding-bottom: 3rem;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: 12px;
+            top: 0;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 3px solid var(--ember);
+            z-index: 1;
+        }
+
+        .timeline-item:last-child .timeline-marker {
+            border-color: var(--green);
+            background: var(--green);
+        }
+
+        .timeline-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--ember);
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-title {
+            font-family: 'Fraunces', serif;
+            font-size: 1.4rem;
+            font-weight: 400;
+            color: var(--white);
+            margin-bottom: 0.75rem;
+        }
+
+        .timeline-desc {
+            font-size: 0.95rem;
+            color: var(--text);
+            line-height: 1.7;
+        }
+
+        /* The Ask - Greg's Role */
+        .ask-section {
+            padding: 8rem 4rem;
+            background: var(--deep);
+            margin: 0 -4rem;
+        }
+
+        .ask-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .ask-card {
+            background: linear-gradient(135deg, var(--surface) 0%, rgba(249, 115, 22, 0.05) 100%);
+            border: 2px solid var(--ember);
+            border-radius: 24px;
+            padding: 4rem;
+            text-align: center;
+        }
+
+        .ask-card h2 {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 200;
+            color: var(--white);
+            margin-bottom: 1.5rem;
+        }
+
+        .ask-card p {
+            font-size: 1.1rem;
+            color: var(--text);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .ask-terms {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+            padding-top: 3rem;
+            border-top: 1px solid var(--border);
+        }
+
+        @media (max-width: 768px) {
+            .ask-terms {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .ask-term {
+            text-align: center;
+        }
+
+        .ask-term-value {
+            font-family: 'Fraunces', serif;
+            font-size: 2rem;
+            font-weight: 300;
+            color: var(--ember);
+            margin-bottom: 0.5rem;
+        }
+
+        .ask-term-label {
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        /* The Closer Quote */
+        .closer-section {
+            padding: 10rem 4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .closer-content {
+            max-width: 900px;
+        }
+
+        .closer-text {
+            font-family: 'Fraunces', serif;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 200;
+            line-height: 1.5;
+            color: var(--bright);
+            margin-bottom: 2rem;
+        }
+
+        .closer-text em {
+            font-style: italic;
+            background: var(--gradient-fire);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 300;
+        }
+
+        .closer-attribution {
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        /* Footer */
+        footer {
+            padding: 4rem;
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-brand span:first-child {
+            font-size: 1.25rem;
+        }
+
+        .footer-brand span:last-child {
+            font-family: 'Fraunces', serif;
+            color: var(--bright);
+        }
+
+        .footer-meta {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--muted);
+        }
+
+        /* Scroll Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+    </style>
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+
+    <div class="bg-elements">
+        <div class="bg-shape one"></div>
+        <div class="bg-shape two"></div>
+        <div class="bg-shape three"></div>
+    </div>
+
+    <nav>
+        <div class="nav-left">
+            <span class="nav-status">War Room</span>
+            <span class="nav-title">Signal Form × Greg</span>
+        </div>
+        <span class="nav-date">01.30.2026</span>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-eyebrow reveal">
+            <div class="hero-eyebrow-line"></div>
+            <span class="hero-eyebrow-text">Strategic Brief</span>
+        </div>
+        <h1 class="hero-title reveal reveal-delay-1">
+            <span class="line">The Keys</span>
+            <span class="line">to the <span class="accent">Castle</span></span>
+        </h1>
+        <p class="hero-subtitle reveal reveal-delay-2">
+            A late-night strategy session on eating Deloitte's lunch, building a creative production studio, and why Elizabeth just handed over the whole damn operation.
+        </p>
+        <div class="hero-meta reveal reveal-delay-3">
+            <div class="meta-item">
+                <span class="meta-label">Advisor</span>
+                <span class="meta-value">Greg</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Context</span>
+                <span class="meta-value">Ballistic Digital Veteran</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Stakes</span>
+                <span class="meta-value highlight">$700K+ Vision</span>
+            </div>
+            <div class="meta-item">
+                <span class="meta-label">Status</span>
+                <span class="meta-value highlight">Unpaid 2.5 Months</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Situation - Bento Grid -->
+    <section>
+        <div class="section-header reveal">
+            <div class="section-number">01 — The Situation</div>
+            <h2 class="section-title">What We're Working With</h2>
+        </div>
+
+        <div class="situation-grid">
+            <div class="bento-card featured reveal">
+                <div class="bento-icon fire">🔑</div>
+                <h3>Elizabeth Gave Mike the Keys</h3>
+                <p>The government client is frustrated with Deloitte. They're delivering one-pagers when she wants interactive experiences. She asked Mike directly: "What do you need to make stuff happen?" and promised full support for whatever he proposes. This is the moment.</p>
+            </div>
+
+            <div class="bento-card tall reveal reveal-delay-1">
+                <div class="bento-icon warning">⚠️</div>
+                <h3>Deloitte's Problem</h3>
+                <p>Type A strategists when creatives are needed. PowerPoints instead of products. And they can't even pay their vendors on time.</p>
+                <div class="stat fire" style="margin-top: 1.5rem;">$20K</div>
+                <p style="color: var(--muted); font-size: 0.85rem;">Owed to Mike. 2.5 months.</p>
+            </div>
+
+            <div class="bento-card wide reveal reveal-delay-2">
+                <div class="bento-icon money">💰</div>
+                <h3>The Opportunity</h3>
+                <div class="stat money">$785K</div>
+                <p style="color: var(--muted); font-size: 0.85rem;">Total vision value through contract term</p>
+            </div>
+
+            <div class="bento-card wide reveal reveal-delay-3">
+                <div class="bento-icon strategy">🎯</div>
+                <h3>Contract Ends September</h3>
+                <p>The vehicle expires in 8 months. Perfect timing to prove the concept and position for a sole source.</p>
+            </div>
+
+            <div class="bento-card reveal reveal-delay-4">
+                <div class="bento-icon gold">👥</div>
+                <h3>VCS Reunion</h3>
+                <p>Rob, Ashley, Ben, Fern. The band could get back together—outside corporate constraints.</p>
+            </div>
+
+            <div class="bento-card reveal">
+                <div class="bento-icon fire">🚀</div>
+                <h3>The Model</h3>
+                <p>Mike + 3 creatives. 8-week sprints. Interactive products, not static PDFs.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quotes -->
+    <section class="quotes-section">
+        <div class="quotes-container">
+            <div class="section-header reveal">
+                <div class="section-number">02 — The Conversation</div>
+                <h2 class="section-title">Key Moments</h2>
+            </div>
+
+            <div class="quote-card reveal">
+                <p class="quote-text">Why on earth would you ever think I'm going to approach creative professionals, promising them the ability to pay them, when you can't pay me? That kind of cash flow puts me in the worst predicament ever.</p>
+                <div class="quote-attribution">
+                    <span class="quote-speaker">Greg's Advice</span>
+                    <span class="quote-context">On leverage and leverage</span>
+                </div>
+            </div>
+
+            <div class="quote-card reveal">
+                <p class="quote-text">I would not show her any of this and say: I have everything you've asked for. I've thought about it, consulted with friends, talked through things. You're never gonna fucking see it until you pay me.</p>
+                <div class="quote-attribution">
+                    <span class="quote-speaker">Greg's Advice</span>
+                    <span class="quote-context">On negotiation tactics</span>
+                </div>
+            </div>
+
+            <div class="quote-card reveal">
+                <p class="quote-text">This is how this stuff happens. People that have worked together for a long time, know each other, and then everyone gets a little more senior, a little more experienced, and someone takes a chance and does a thing and gets lucky.</p>
+                <div class="quote-attribution">
+                    <span class="quote-speaker">Greg</span>
+                    <span class="quote-context">On building companies</span>
+                </div>
+            </div>
+
+            <div class="quote-card reveal">
+                <p class="quote-text">You gotta figure out how to put that in a bottle and sell it—'cause you can only do so much.</p>
+                <div class="quote-attribution">
+                    <span class="quote-speaker">Greg</span>
+                    <span class="quote-context">On scaling beyond Mike</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Strategy -->
+    <section class="strategy-section">
+        <div class="section-header reveal">
+            <div class="section-number">03 — The Play</div>
+            <h2 class="section-title">Greg's Strategic Framework</h2>
+        </div>
+
+        <div class="strategy-grid">
+            <div class="strategy-column problem reveal">
+                <h3>The Risks</h3>
+                <ul class="strategy-list">
+                    <li>Deloitte sees $100K in fees—not enough to get out of bed for</li>
+                    <li>But they also see $700K+ on the table if they grow it</li>
+                    <li>PM seems like a "wet noodle"—apathetic, not a dealmaker</li>
+                    <li>Payment delays indicate what to expect operationally</li>
+                    <li>Taking on 1099 risk without cash flow is dangerous</li>
+                </ul>
+            </div>
+
+            <div class="strategy-column solution reveal reveal-delay-1">
+                <h3>The Moves</h3>
+                <ul class="strategy-list">
+                    <li>Don't show the proposal until payment is resolved</li>
+                    <li>Use the payment issue as leverage, not weakness</li>
+                    <li>Get money upfront—lump sum, not drip-fed</li>
+                    <li>Work with Elizabeth to position for September sole source</li>
+                    <li>Let the government build Signal Form, like Ballistic Digital</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Numbers -->
+    <section class="numbers-section">
+        <div class="numbers-grid">
+            <div class="number-card reveal">
+                <div class="number-value fire">$165K</div>
+                <div class="number-label">Phase 1 Sprint</div>
+            </div>
+            <div class="number-card reveal reveal-delay-1">
+                <div class="number-value fire">$300K</div>
+                <div class="number-label">Recommended Path</div>
+            </div>
+            <div class="number-card reveal reveal-delay-2">
+                <div class="number-value money">$785K</div>
+                <div class="number-label">Full Vision</div>
+            </div>
+            <div class="number-card reveal reveal-delay-3">
+                <div class="number-value blue">10 hrs</div>
+                <div class="number-label">Greg's Weekly Commit</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline -->
+    <section class="timeline-section">
+        <div class="section-header reveal">
+            <div class="section-number">04 — The Path</div>
+            <h2 class="section-title">How This Plays Out</h2>
+        </div>
+
+        <div class="timeline">
+            <div class="timeline-item reveal">
+                <div class="timeline-marker"></div>
+                <div class="timeline-date">Now → February</div>
+                <div class="timeline-title">Get Paid First</div>
+                <div class="timeline-desc">No proposal until the $20K owed is resolved. Use the payment issue as leverage to demonstrate commitment. "I'm not taking on more risk until you handle the basics."</div>
+            </div>
+
+            <div class="timeline-item reveal">
+                <div class="timeline-marker"></div>
+                <div class="timeline-date">March → May</div>
+                <div class="timeline-title">Phase 1: Proof of Concept</div>
+                <div class="timeline-desc">8-week sprint with 3 creatives. Deliver interactive products that make Deloitte's one-pagers look prehistoric. Build trust with Elizabeth.</div>
+            </div>
+
+            <div class="timeline-item reveal">
+                <div class="timeline-marker"></div>
+                <div class="timeline-date">June</div>
+                <div class="timeline-title">Conference Demo</div>
+                <div class="timeline-desc">One government conference. One QR code. One interactive experience that shows exactly what Signal Form can do. New doors open.</div>
+            </div>
+
+            <div class="timeline-item reveal">
+                <div class="timeline-marker"></div>
+                <div class="timeline-date">September</div>
+                <div class="timeline-title">Contract Vehicle Expires</div>
+                <div class="timeline-desc">The government says: "Actually, we're going to sole source to Signal Form." Deloitte fades. The studio launches for real.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Ask -->
+    <section class="ask-section">
+        <div class="ask-container">
+            <div class="ask-card reveal">
+                <h2>The Ask</h2>
+                <p>Mike needs an operations advisor who's been through this before. Someone who knows government contracting, company building, and when to push back on corporate bullshit. Greg's done it at Ballistic Digital—watching a 3-person shop grow to 10 in four years.</p>
+                <p>The reach question: What would it take to do this together?</p>
+
+                <div class="ask-terms">
+                    <div class="ask-term">
+                        <div class="ask-term-value">10 hrs/wk</div>
+                        <div class="ask-term-label">Advisory Commitment</div>
+                    </div>
+                    <div class="ask-term">
+                        <div class="ask-term-value">TBD</div>
+                        <div class="ask-term-label">Rate + Margin</div>
+                    </div>
+                    <div class="ask-term">
+                        <div class="ask-term-value">∞</div>
+                        <div class="ask-term-label">Upside Potential</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Closer -->
+    <section class="closer-section">
+        <div class="closer-content reveal">
+            <p class="closer-text">
+                "This interests me so much more than the first hour of conversation, truly. This could be like a career transition for me that I've been wanting to do for five years—<em>to actually build a business</em> in a field that I have some confidence in."
+            </p>
+            <p class="closer-attribution">— Greg, on what comes next</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-brand">
+            <span>🦊</span>
+            <span>Patch Brief</span>
+        </div>
+        <p class="footer-meta">January 30, 2026 · Late Night Strategy Session</p>
+    </footer>
+
+    <script>
+        // Progress bar
+        const progressBar = document.getElementById('progressBar');
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = scrollTop / docHeight;
+            progressBar.style.transform = `scaleX(${progress})`;
+        });
+
+        // Reveal on scroll
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -80px 0px'
+        });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Parallax for background shapes
+        window.addEventListener('scroll', () => {
+            const scrolled = window.scrollY;
+            document.querySelectorAll('.bg-shape').forEach((shape, i) => {
+                const speed = 0.03 + (i * 0.015);
+                shape.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
