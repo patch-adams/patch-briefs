@@ -43,6 +43,25 @@ Whenever a reference website is mentioned in conversation, it gets logged here w
 
 ---
 
+### 2026-02-02
+
+#### Krisnan Brief - Original Concept
+- **URL**: N/A (no external reference)
+- **Brief**: Krisnan (Odyssey Works Faculty)
+- **Concept**: Illuminated manuscript meets modern editorial
+- **Key Design Choices**:
+  - **Light mode** (first light-mode brief)
+  - Parchment/cream/terracotta/ink palette
+  - Single column, text-forward layout
+  - Cormorant Garamond serif for body text
+  - Drop caps on opening paragraphs
+  - Simple ◊ dividers instead of icons
+  - No gradients, no effects, no orbs
+  - Ice dots visualization for "islands of coherence"
+- **Why It Works**: Content about Vedic wisdom and cultural fire demanded something that felt like a sacred text transmission, not a tech landing page
+
+---
+
 ### 2026-01-30
 
 #### Godly Website (Monopo Tokyo Reference)
@@ -61,7 +80,7 @@ Whenever a reference website is mentioned in conversation, it gets logged here w
 - Odyssey Works (2026-01-31)
 
 ### Editorial / Typography-Forward
-- (none yet)
+- Krisnan Brief (2026-02-02) - Original concept, light mode
 
 ### Brutalist / Anti-Design
 - (none yet)
