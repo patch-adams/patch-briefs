@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Lies We Tell — A Book Proposal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --ink: #1A1A1A;
+    --cream: #FAF8F5;
+    --paper: #F2EDE7;
+    --blood: #8B1A1A;
+    --blood-light: #A62626;
+    --ember: #C44B2F;
+    --smoke: #4A4A4A;
+    --ash: #6B6B6B;
+    --bone: #E8E2DA;
+    --serif: 'Fraunces', Georgia, serif;
+    --sans: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Paper texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at center, transparent 40%, var(--cream) 100%);
+    z-index: 1;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 720px;
+  }
+
+  .hero-tag {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--blood);
+    background: rgba(139, 26, 26, 0.08);
+    padding: 0.4rem 1.2rem;
+    border-radius: 2rem;
+    display: inline-block;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(3rem, 8vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--blood);
+  }
+
+  .hero-sub {
+    font-family: var(--serif);
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    font-weight: 300;
+    color: var(--smoke);
+    line-height: 1.5;
+    margin-bottom: 2rem;
+    font-style: italic;
+  }
+
+  .hero-byline {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ash);
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, var(--blood), transparent);
+    opacity: 0.4;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.2; }
+    50% { opacity: 0.6; }
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+  }
+
+  .section-wide {
+    max-width: 1000px;
+  }
+
+  .section-tag {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--blood);
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .section h2 {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 400;
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+    color: var(--ink);
+  }
+
+  .section p {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: var(--smoke);
+    margin-bottom: 1.25rem;
+  }
+
+  /* ── PULL QUOTE ── */
+  .pull-quote {
+    position: relative;
+    padding: 3rem 0;
+    margin: 3rem 0;
+    border-top: 1px solid var(--bone);
+    border-bottom: 1px solid var(--bone);
+  }
+
+  .pull-quote blockquote {
+    font-family: var(--serif);
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.4;
+    color: var(--blood);
+    text-align: center;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .pull-quote .attribution {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ash);
+    text-align: center;
+    margin-top: 1rem;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    text-align: center;
+  }
+
+  .divider-line {
+    display: inline-block;
+    width: 40px;
+    height: 1px;
+    background: var(--blood);
+    opacity: 0.3;
+  }
+
+  /* ── CHAPTER GRID ── */
+  .chapter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .chapter-card {
+    background: white;
+    border: 1px solid var(--bone);
+    border-radius: 12px;
+    padding: 2rem;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .chapter-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--blood);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+
+  .chapter-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--blood);
+    box-shadow: 0 12px 40px rgba(139, 26, 26, 0.08);
+  }
+
+  .chapter-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .chapter-number {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--blood);
+    margin-bottom: 0.75rem;
+  }
+
+  .chapter-card h3 {
+    font-family: var(--serif);
+    font-size: 1.35rem;
+    font-weight: 400;
+    margin-bottom: 0.75rem;
+    color: var(--ink);
+  }
+
+  .chapter-card p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--ash);
+  }
+
+  .chapter-quote {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--blood);
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--bone);
+    line-height: 1.5;
+  }
+
+  /* ── OVERLAY ── */
+  .overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--cream);
+    z-index: 2000;
+    overflow-y: auto;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+  }
+
+  .overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .overlay-close {
+    position: fixed;
+    top: 1.5rem;
+    right: 1.5rem;
+    width: 48px;
+    height: 48px;
+    background: var(--blood);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 1.4rem;
+    cursor: pointer;
+    z-index: 2001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    line-height: 1;
+  }
+
+  .overlay-close:hover {
+    background: var(--blood-light);
+    transform: rotate(90deg);
+  }
+
+  .overlay-content {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 5rem 2rem 4rem;
+  }
+
+  .overlay-content h2 {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 400;
+    margin-bottom: 2rem;
+    line-height: 1.15;
+  }
+
+  .overlay-content p {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--smoke);
+    margin-bottom: 1.25rem;
+  }
+
+  .overlay-content .highlight-box {
+    background: rgba(139, 26, 26, 0.04);
+    border-left: 3px solid var(--blood);
+    padding: 1.5rem 2rem;
+    margin: 2rem 0;
+    border-radius: 0 8px 8px 0;
+  }
+
+  .overlay-content .highlight-box p {
+    color: var(--ink);
+    margin-bottom: 0;
+    font-size: 1rem;
+  }
+
+  /* ── AUTHOR SECTION ── */
+  .author-section {
+    background: white;
+    border: 1px solid var(--bone);
+    border-radius: 16px;
+    padding: 3rem;
+    margin-top: 2rem;
+  }
+
+  .author-section h3 {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+  }
+
+  .author-traits {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+  }
+
+  .trait {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--blood);
+    background: rgba(139, 26, 26, 0.06);
+    padding: 0.35rem 0.9rem;
+    border-radius: 2rem;
+  }
+
+  /* ── FORMAT SECTION ── */
+  .format-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .format-item {
+    text-align: center;
+    padding: 2rem 1.5rem;
+    background: white;
+    border: 1px solid var(--bone);
+    border-radius: 12px;
+  }
+
+  .format-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .format-item h4 {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+  }
+
+  .format-item p {
+    font-size: 0.85rem;
+    color: var(--ash);
+    line-height: 1.5;
+  }
+
+  /* ── APPROACH FLOW ── */
+  .approach-steps {
+    margin-top: 2rem;
+  }
+
+  .step {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+
+  .step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 44px;
+    bottom: -1rem;
+    width: 1px;
+    background: var(--bone);
+  }
+
+  .step-num {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    background: var(--blood);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .step-content h4 {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 400;
+    margin-bottom: 0.3rem;
+  }
+
+  .step-content p {
+    font-size: 0.95rem;
+    color: var(--ash);
+    line-height: 1.6;
+  }
+
+  /* ── CLOSING CTA ── */
+  .closing {
+    text-align: center;
+    padding: 6rem 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .closing h2 {
+    font-family: var(--serif);
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    font-weight: 300;
+    line-height: 1.3;
+    color: var(--ink);
+    max-width: 600px;
+    margin: 0 auto 2rem;
+  }
+
+  .closing-line {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--blood);
+    max-width: 500px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+
+  .closing-byline {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ash);
+    margin-top: 3rem;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .hero { padding: 3rem 1.5rem; }
+    .section { padding: 3rem 1.5rem; }
+    .chapter-grid { grid-template-columns: 1fr; }
+    .format-grid { grid-template-columns: 1fr; }
+    .author-section { padding: 2rem 1.5rem; }
+    .overlay-content { padding: 4rem 1.5rem 3rem; }
+  }
+
+  /* ── FADE IN ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  /* No-JS fallback */
+  @media (prefers-reduced-motion: reduce) {
+    .fade-in { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-content">
+    <span class="hero-tag fade-in">A Book Proposal</span>
+    <h1 class="fade-in">The Lies<br><em>We Tell</em></h1>
+    <p class="hero-sub fade-in">A surgeon's field notes on the lies<br>that hold everything together.</p>
+    <p class="hero-byline fade-in">Jason R.</p>
+  </div>
+  <div class="scroll-hint"></div>
+</section>
+
+<!-- ── THE PREMISE ── -->
+<section class="section">
+  <span class="section-tag fade-in">The Premise</span>
+  <h2 class="fade-in">We lie to ourselves.<br>Not maliciously. Structurally.</h2>
+  <p class="fade-in">We do it about our marriages, our politics, our health, our kids, our identities. The smarter you are, the better you are at it — because intelligence gives you the tools to contextualize anything.</p>
+  <p class="fade-in">This book is about what happens when you stop.</p>
+</section>
+
+<div class="divider"><span class="divider-line"></span></div>
+
+<!-- ── PULL QUOTE 1 ── -->
+<div class="section">
+  <div class="pull-quote fade-in">
+    <blockquote>"I don't believe people who are not an authority on something should write books for the masses. But for the first time in my life, I have something to say."</blockquote>
+    <p class="attribution">— Jason R.</p>
+  </div>
+</div>
+
+<!-- ── THE AUTHOR ── -->
+<section class="section">
+  <span class="section-tag fade-in">The Author</span>
+  <div class="author-section fade-in">
+    <h3>Jason R. writes from inside the arena.</h3>
+    <p style="font-size: 1.05rem; line-height: 1.75; color: var(--smoke); margin-top: 1rem;">He's a bariatric surgeon who cuts people's stomachs out for a living — in a country where 40% of the population is obese. He's a gun owner willing to say when his own side is wrong. He's a father who knows his kids can screw up any day. A husband who'll tell you marriage is tough.</p>
+    <p style="font-size: 1.05rem; line-height: 1.75; color: var(--smoke); margin-top: 0.75rem;">He doesn't have it figured out. That's what makes him qualified.</p>
+    <div class="author-traits">
+      <span class="trait">Bariatric Surgeon</span>
+      <span class="trait">Father</span>
+      <span class="trait">Gun Owner</span>
+      <span class="trait">Husband</span>
+      <span class="trait">Self-Examiner</span>
+    </div>
+  </div>
+</section>
+
+<!-- ── PULL QUOTE 2 ── -->
+<div class="section">
+  <div class="pull-quote fade-in">
+    <blockquote>"Sometimes all they need is permission to just stop."</blockquote>
+    <p class="attribution">— Jason R.</p>
+  </div>
+</div>
+
+<!-- ── THE CHAPTERS ── -->
+<section class="section section-wide">
+  <span class="section-tag fade-in">Six Deceptions</span>
+  <h2 class="fade-in">Each chapter enters a domain where self-deception is load-bearing.</h2>
+  <p class="fade-in">Jason's personal experience. An authority's perspective. A recorded conversation. The lie exposed.</p>
+
+  <div class="chapter-grid">
+    <div class="chapter-card fade-in" onclick="openOverlay('medicine')">
+      <span class="chapter-number">Chapter 01</span>
+      <h3>Medicine</h3>
+      <p>The obesity epidemic didn't exist 50 years ago. We never had to make pills and shots for it. We never had to cut people's stomachs out. So why?</p>
+      <p class="chapter-quote">"This only happened in the last 50 years."</p>
+    </div>
+
+    <div class="chapter-card fade-in" onclick="openOverlay('marriage')">
+      <span class="chapter-number">Chapter 02</span>
+      <h3>Marriage</h3>
+      <p>The lie that love is enough. The performance of partnership vs. the reality of it. What happens when you admit it's hard — out loud.</p>
+      <p class="chapter-quote">"I have a great marriage. But marriage is tough."</p>
+    </div>
+
+    <div class="chapter-card fade-in" onclick="openOverlay('politics')">
+      <span class="chapter-number">Chapter 03</span>
+      <h3>Politics</h3>
+      <p>A gun owner who calls bullshit on his own tribe. The cognitive dissonance of defending rights while ignoring inconvenient truths.</p>
+      <p class="chapter-quote">"The cognitive dissonance in our culture is fucking insane."</p>
+    </div>
+
+    <div class="chapter-card fade-in" onclick="openOverlay('parenting')">
+      <span class="chapter-number">Chapter 04</span>
+      <h3>Parenting</h3>
+      <p>The myth that good parenting produces guaranteed outcomes. The terror of admitting your kids are their own people.</p>
+      <p class="chapter-quote">"My kids can fuck up any day, every day."</p>
+    </div>
+
+    <div class="chapter-card fade-in" onclick="openOverlay('identity')">
+      <span class="chapter-number">Chapter 05</span>
+      <h3>Identity</h3>
+      <p>The lies so deep you don't know they're lies. The stories you built yourself on that were never true — and what's left when they fall.</p>
+      <p class="chapter-quote">The lies so deep you don't know they're there.</p>
+    </div>
+
+    <div class="chapter-card fade-in" onclick="openOverlay('culture')">
+      <span class="chapter-number">Chapter 06</span>
+      <h3>Culture</h3>
+      <p>The collective agreement to not look. Who told us we had to lie to ourselves? And what would it mean to collectively stop?</p>
+      <p class="chapter-quote">Who told us we had to lie to ourselves?</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── THE FORMAT ── -->
+<section class="section">
+  <span class="section-tag fade-in">The Format</span>
+  <h2 class="fade-in">Not a self-help book.<br>Not a memoir. Not a manifesto.</h2>
+  <p class="fade-in">Part book. Part documentary. All honest. Each chapter weaves together Jason's lived experience with recorded conversations with authorities who've spent their lives in each domain.</p>
+
+  <div class="format-grid">
+    <div class="format-item fade-in">
+      <span class="format-icon">&#9998;</span>
+      <h4>Written Narrative</h4>
+      <p>Jason's personal experience and reflection in each domain</p>
+    </div>
+    <div class="format-item fade-in">
+      <span class="format-icon">&#127908;</span>
+      <h4>Recorded Conversations</h4>
+      <p>60-90 minute interviews with authorities — unscripted, unedited honesty</p>
+    </div>
+    <div class="format-item fade-in">
+      <span class="format-icon">&#127760;</span>
+      <h4>Online Companion</h4>
+      <p>Full audio of every conversation — readers go deeper when they want to</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><span class="divider-line"></span></div>
+
+<!-- ── THE CONVERSATIONS ── -->
+<section class="section">
+  <span class="section-tag fade-in">The Conversations</span>
+  <h2 class="fade-in">Real people. Real expertise.<br>No scripts.</h2>
+  <p class="fade-in">Jason will sit down with people who've spent their lives inside each domain. Not celebrities. Not influencers. People with skin in the game.</p>
+
+  <div class="author-section fade-in" style="margin-top: 2rem;">
+    <p style="font-size: 1.05rem; line-height: 1.75; color: var(--smoke);">The cardiothoracic surgeon who performed the first pediatric lung transplant — 65 years old, just donated a kidney on a whim, hiking Greenland next month. The mega-investor who made his fortune investing in other people's dreams. The gun owner who'll tell you exactly where his own side is lying.</p>
+    <p style="font-size: 1.05rem; line-height: 1.75; color: var(--smoke); margin-top: 0.75rem;">These aren't interviews. They're the conversations we all wish we could have — between people willing to be honest about the lies they've told themselves.</p>
+  </div>
+</section>
+
+<!-- ── PULL QUOTE 3 ── -->
+<div class="section">
+  <div class="pull-quote fade-in">
+    <blockquote>"The guy who almost didn't write a book about self-deception — because of self-deception."</blockquote>
+  </div>
+</div>
+
+<!-- ── NEXT STEPS ── -->
+<section class="section">
+  <span class="section-tag fade-in">What Happens Next</span>
+  <h2 class="fade-in">Five steps from here to published.</h2>
+
+  <div class="approach-steps">
+    <div class="step fade-in">
+      <div class="step-num">01</div>
+      <div class="step-content">
+        <h4>Send the Prologue</h4>
+        <p>Jason has it drafted. The raw starting point — the why behind the book.</p>
+      </div>
+    </div>
+    <div class="step fade-in">
+      <div class="step-num">02</div>
+      <div class="step-content">
+        <h4>The 90-Minute Session</h4>
+        <p>Unstructured conversation to find the shape of the book. Walk out with a complete plan — chapter structure, interview list, timeline.</p>
+      </div>
+    </div>
+    <div class="step fade-in">
+      <div class="step-num">03</div>
+      <div class="step-content">
+        <h4>Record the Conversations</h4>
+        <p>60-90 minutes each with the authorities Jason already knows. Unscripted. Honest. These become the backbone of each chapter.</p>
+      </div>
+    </div>
+    <div class="step fade-in">
+      <div class="step-num">04</div>
+      <div class="step-content">
+        <h4>Build the Chapters</h4>
+        <p>Weave Jason's experience with the recorded conversations. Written narrative + companion audio for each domain.</p>
+      </div>
+    </div>
+    <div class="step fade-in">
+      <div class="step-num">05</div>
+      <div class="step-content">
+        <h4>Launch the Web Experience</h4>
+        <p>The book lives online too — full conversations, multimedia companion, the unedited truth.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><span class="divider-line"></span></div>
+
+<!-- ── CLOSING ── -->
+<section class="closing">
+  <h2 class="fade-in">"In 90 minutes, I guarantee you<br>we will be fucking stoked because<br>we'll have a plan."</h2>
+  <p class="closing-line fade-in">Let's build this thing.</p>
+  <p class="closing-byline fade-in">Prepared by Signalform Studio</p>
+</section>
+
+<!-- ── OVERLAYS ── -->
+<div class="overlay" id="overlay-medicine">
+  <button class="overlay-close" onclick="closeOverlay()">&times;</button>
+  <div class="overlay-content">
+    <span class="section-tag">Chapter 01</span>
+    <h2>Medicine</h2>
+    <p>Jason is a bariatric surgeon. Every day he operates on patients whose bodies have been shaped by an epidemic that didn't exist within his parents' lifetime.</p>
+    <div class="highlight-box">
+      <p>"We never had to make pills and shots for obesity. We never had to cut people's stomachs out. This only happened in the last 50 years. So why?"</p>
+    </div>
+    <p>This chapter isn't about blaming patients or the food industry. It's about the collective self-deception that allows a society to normalize a crisis — and the personal self-deception that keeps a surgeon from asking the harder questions about his own role in the system.</p>
+    <p>The authority conversation: a physician who's spent decades watching the medical establishment treat symptoms while ignoring causes — and who's ready to say so on the record.</p>
+  </div>
+</div>
+
+<div class="overlay" id="overlay-marriage">
+  <button class="overlay-close" onclick="closeOverlay()">&times;</button>
+  <div class="overlay-content">
+    <span class="section-tag">Chapter 02</span>
+    <h2>Marriage</h2>
+    <p>Jason will tell you he has a great marriage. He'll also tell you marriage is tough. Most people can only say one of those things at a time.</p>
+    <div class="highlight-box">
+      <p>The lie isn't that marriage is easy. The lie is that admitting it's hard means something is wrong. The performance of effortless partnership — on social media, at dinner parties, in front of the kids — is its own form of self-deception.</p>
+    </div>
+    <p>This chapter explores what happens when two people agree to stop performing. What honesty costs. What it builds. And why most couples would rather maintain the lie.</p>
+  </div>
+</div>
+
+<div class="overlay" id="overlay-politics">
+  <button class="overlay-close" onclick="closeOverlay()">&times;</button>
+  <div class="overlay-content">
+    <span class="section-tag">Chapter 03</span>
+    <h2>Politics</h2>
+    <p>Jason is a gun owner. He believes in the Second Amendment. And he'll be the first to tell you when his own side is lying to itself.</p>
+    <div class="highlight-box">
+      <p>"If this shooting had happened under a Democratic president, 2A advocates would be mobilized. But silence under this administration? The NRA gave one sentence. The cognitive dissonance in our culture is fucking insane."</p>
+    </div>
+    <p>This isn't a chapter about gun control. It's about the tribal loyalties that override honest thinking — on both sides. It's about what it costs to call bullshit on your own people. And why almost nobody does.</p>
+    <p>The authority conversation: someone who's spent their career in the machinery of political communication — and who can articulate exactly how the self-deception gets manufactured at scale.</p>
+  </div>
+</div>
+
+<div class="overlay" id="overlay-parenting">
+  <button class="overlay-close" onclick="closeOverlay()">&times;</button>
+  <div class="overlay-content">
+    <span class="section-tag">Chapter 04</span>
+    <h2>Parenting</h2>
+    <p>Jason has kids. He loves them completely. And he knows — really knows, in the way most parents won't say out loud — that they can fail. That good parenting doesn't come with a guarantee.</p>
+    <div class="highlight-box">
+      <p>"My kids can fuck up any day, every day." That's not pessimism. That's the honest starting point that most parenting advice refuses to acknowledge.</p>
+    </div>
+    <p>This chapter is about the self-deception that parenting culture runs on: the belief that if you do everything right, the outcome is assured. The terror of admitting your children are autonomous beings who will make their own choices — including bad ones.</p>
+    <p>And the freedom that comes from accepting that. The permission to parent from honesty instead of fear.</p>
+  </div>
+</div>
+
+<div class="overlay" id="overlay-identity">
+  <button class="overlay-close" onclick="closeOverlay()">&times;</button>
+  <div class="overlay-content">
+    <span class="section-tag">Chapter 05</span>
+    <h2>Identity</h2>
+    <p>The deepest lies are the ones you don't know are lies. The stories you built your entire self-concept on — the ones that feel like bedrock but are actually scaffolding.</p>
+    <div class="highlight-box">
+      <p>Jason wanted to write this book for years. What stopped him? The belief that he wasn't qualified. A bariatric surgeon who sees self-deception every day in his patients — was deceiving himself about his own right to say something about it.</p>
+    </div>
+    <p>This chapter goes to the foundation. The lies about who we are, what we deserve, what we're capable of. The identities we constructed in childhood that we're still living inside as adults. And what happens when you start pulling at those threads.</p>
+  </div>
+</div>
+
+<div class="overlay" id="overlay-culture">
+  <button class="overlay-close" onclick="closeOverlay()">&times;</button>
+  <div class="overlay-content">
+    <span class="section-tag">Chapter 06</span>
+    <h2>Culture</h2>
+    <p>Individual self-deception is one thing. But what about the lies a whole society agrees to believe?</p>
+    <div class="highlight-box">
+      <p>Who told us we had to lie to ourselves? At what point did collective self-deception become not just tolerated but required — the price of admission to civil society?</p>
+    </div>
+    <p>This final chapter zooms out from the personal to the systemic. The cultural agreements to not look too closely. The shared fictions that hold institutions together. And the question of whether a society can function without them — or whether honesty at scale is its own kind of disruption.</p>
+    <p>The authority conversation: someone who studies how cultures construct and maintain their blind spots — and what happens when those constructions crack.</p>
+  </div>
+</div>
+
+<script>
+  // Fade-in on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        if (typeof gsap !== 'undefined') {
+          gsap.to(entry.target, { opacity: 1, y: 0, duration: 0.8, ease: 'power2.out' });
+        } else {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.fade-in').forEach(el => {
+    if (typeof gsap === 'undefined') {
+      el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    }
+    observer.observe(el);
+  });
+
+  // Overlay system
+  function openOverlay(id) {
+    const overlay = document.getElementById('overlay-' + id);
+    if (!overlay) return;
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    if (typeof gsap !== 'undefined') {
+      gsap.fromTo(overlay.querySelector('.overlay-content'),
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out', delay: 0.1 }
+      );
+    }
+  }
+
+  function closeOverlay() {
+    document.querySelectorAll('.overlay.active').forEach(o => {
+      o.classList.remove('active');
+    });
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeOverlay();
+  });
+</script>
+
+</body>
+</html>
